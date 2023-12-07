@@ -3,3 +3,13 @@
 
 #include "ProjectPortGameModeBase.h"
 
+void AProjectPortGameModeBase::StartPlay()
+{
+	Super::StartPlay();
+
+	if (MainHUDWidgetClass)
+	{
+		MainHUDWidget = CreateWidget<UPUserWidget>(GetWorld(), MainHUDWidgetClass);
+		MainHUDWidget->AddToViewport(0);
+	}
+}

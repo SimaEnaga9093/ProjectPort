@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+
+#include "UI/PUserWidget.h"
+
 #include "ProjectPortGameModeBase.generated.h"
 
 /**
@@ -14,4 +17,12 @@ class PROJECTPORT_API AProjectPortGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+	virtual void StartPlay() override;
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<UPUserWidget> MainHUDWidgetClass;
+
+	UPROPERTY()
+	TSoftObjectPtr<UPUserWidget> MainHUDWidget;
 };
