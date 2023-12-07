@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "../PUserWidget.h"
+#include "PUserWidget.h"
 
 #include "PCommonButton.generated.h"
 
@@ -41,4 +41,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TextSize;
+
+public:
+	UFUNCTION()
+	TSoftObjectPtr<UButton> GetButtonBG() { return ButtonBG; }
 };
