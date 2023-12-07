@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Blueprint/UserWidget.h"
+
 #include "PUserWidget.generated.h"
 
 /**
- * 
+ * Base Class of Project's UserWidget
  */
 UCLASS()
 class PROJECTPORT_API UPUserWidget : public UUserWidget

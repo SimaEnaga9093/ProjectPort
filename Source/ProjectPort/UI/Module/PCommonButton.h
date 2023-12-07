@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "../PUserWidget.h"
+
 #include "PCommonButton.generated.h"
 
 class USizeBox;
@@ -11,7 +13,7 @@ class UButton;
 class UTextBlock;
 
 /**
- * 
+ * Module Common button with text
  */
 UCLASS()
 class PROJECTPORT_API UPCommonButton : public UPUserWidget

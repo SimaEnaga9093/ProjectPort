@@ -10,7 +10,7 @@
 #include "ProjectPortGameModeBase.generated.h"
 
 /**
- * 
+ * Base Gamemode of Project
  */
 UCLASS()
 class PROJECTPORT_API AProjectPortGameModeBase : public AGameModeBase
@@ -20,6 +20,7 @@ class PROJECTPORT_API AProjectPortGameModeBase : public AGameModeBase
 	virtual void StartPlay() override;
 
 protected:
+	// Need to set from blueprint
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UPUserWidget> MainHUDWidgetClass;
 
