@@ -18,9 +18,13 @@ class PROJECTPORT_API AProjectPortGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
 	virtual void StartPlay() override;
 
 protected:
+	UFUNCTION()
+	void OnBackPressed();
+
 	// Need to set from blueprint
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UPHUDWidget> MainHUDWidgetClass;
@@ -34,16 +38,13 @@ protected:
 	UPROPERTY()
 	TArray<TSoftObjectPtr<UPPopupWidget>> PopupWidgetList;
 
-	UFUNCTION()
-	void OnBackPressed();
-
 public:
+	UFUNCTION()
+	void ClosePopup(UPPopupWidget* TargetPopup);
+
 	UFUNCTION()
 	UPHUDWidget* OpenHUDWidget(const FString& HUDName, int ZOrder = 0);
 
 	UFUNCTION()
 	UPPopupWidget* OpenPopupWidget(const FString& PopupName);
-
-	UFUNCTION()
-	void ClosePopup(UPPopupWidget* TargetPopup);
 };

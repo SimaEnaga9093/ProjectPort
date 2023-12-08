@@ -54,18 +54,14 @@ void UPCommonButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	{
 		InputDelayTimer += InDeltaTime;
 		if (InputDelayTimer > InputDelaySec)
-		{
 			UpdateButtonInputDelayState(false);
-		}
 	}
 }
 
 void UPCommonButton::OnButtonBGClicked()
 {
 	if (InputDelaySec > 0.0f)
-	{
 		UpdateButtonInputDelayState(true);
-	}
 }
 
 void UPCommonButton::UpdateButtonInputDelayState(bool bActive)

@@ -8,7 +8,6 @@
 #include "Components/Button.h"
 #include "PCommonButton.h"
 
-
 void UPCommonPopupWidget::NativePreConstruct()
 {
 	Super::NativePreConstruct();
@@ -21,9 +20,7 @@ void UPCommonPopupWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	if (CommonButtonConfirm)
-	{
 		CommonButtonConfirm->GetButtonBG()->OnClicked.AddDynamic(this, &UPPopupWidget::ClosePopup);
-	}
 }
 
 void UPCommonPopupWidget::NativeDestruct()
@@ -31,9 +28,7 @@ void UPCommonPopupWidget::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (CommonButtonConfirm)
-	{
 		CommonButtonConfirm->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPPopupWidget::ClosePopup);
-	}
 }
 
 void UPCommonPopupWidget::UpdatePopup()

@@ -26,6 +26,12 @@ protected:
 	virtual void NativeDestruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
+	UFUNCTION()
+	void OnButtonBGClicked();
+
+	UFUNCTION()
+	void UpdateButtonInputDelayState(bool bActive);
+
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<USizeBox> SizeBoxBG;
 
@@ -35,16 +41,13 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextMain;
 
-	UFUNCTION()
-	void OnButtonBGClicked();
-	
-	UFUNCTION()
-	void UpdateButtonInputDelayState(bool bActive);
-
 	bool ActivateInputDelay = false;
 	float InputDelayTimer = 0.0f;
 
 public:
+	UFUNCTION()
+	TSoftObjectPtr<UButton> GetButtonBG() { return ButtonBG; }
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector2D WidthHeightOverride;
 
@@ -56,7 +59,4 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float InputDelaySec = 1.0f;
-
-	UFUNCTION()
-	TSoftObjectPtr<UButton> GetButtonBG() { return ButtonBG; }
 };

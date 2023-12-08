@@ -22,10 +22,9 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UPCommonButton> CommonButtonQuest;
-
-protected:
 	UFUNCTION()
 	void OnButtonQuestClicked();
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonQuest;
 };
