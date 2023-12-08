@@ -17,6 +17,16 @@ void UPMainHUDWidget::NativeConstruct()
 	}
 }
 
+void UPMainHUDWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (CommonButtonQuest)
+	{
+		CommonButtonQuest->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPMainHUDWidget::OnButtonQuestClicked);
+	}
+}
+
 void UPMainHUDWidget::OnButtonQuestClicked()
 {
 	GetPortGameMode()->OpenHUDWidget(TEXT("WBP_QuestHUD"), 0);

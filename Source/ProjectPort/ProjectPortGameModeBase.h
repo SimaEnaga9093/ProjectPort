@@ -27,6 +27,12 @@ protected:
 	UPROPERTY()
 	TSoftObjectPtr<UPHUDWidget> MainHUDWidget;
 
+	UPROPERTY()
+	TArray<TSoftObjectPtr<UPHUDWidget>> HUDWidgetHistory;
+
+	UFUNCTION()
+	void OnBackPressed();
+
 public:
 	UFUNCTION()
 	UPHUDWidget* OpenHUDWidget(const FString& HUDName, int ZOrder = 0);

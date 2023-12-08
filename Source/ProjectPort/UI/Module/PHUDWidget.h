@@ -16,4 +16,16 @@ class PROJECTPORT_API UPHUDWidget : public UPUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UFUNCTION()
+	virtual void OnOpen();
+
+	UFUNCTION()
+	virtual void OnClose();
+
+	UFUNCTION()
+	virtual void OnBack();
+
+	UFUNCTION()
+	virtual bool HandleBackAction();
 };

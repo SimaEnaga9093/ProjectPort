@@ -20,6 +20,7 @@ class PROJECTPORT_API UPMainHUDWidget : public UPHUDWidget
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonButton> CommonButtonQuest;
