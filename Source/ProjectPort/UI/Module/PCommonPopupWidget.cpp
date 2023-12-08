@@ -21,6 +21,9 @@ void UPCommonPopupWidget::NativeConstruct()
 
 	if (CommonButtonConfirm)
 		CommonButtonConfirm->GetButtonBG()->OnClicked.AddDynamic(this, &UPPopupWidget::ClosePopup);
+
+	if (ButtonBG)
+		ButtonBG->OnClicked.AddDynamic(this, &UPPopupWidget::ClosePopup);
 }
 
 void UPCommonPopupWidget::NativeDestruct()
@@ -29,6 +32,9 @@ void UPCommonPopupWidget::NativeDestruct()
 
 	if (CommonButtonConfirm)
 		CommonButtonConfirm->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPPopupWidget::ClosePopup);
+
+	if (ButtonBG)
+		ButtonBG->OnClicked.RemoveDynamic(this, &UPPopupWidget::ClosePopup);
 }
 
 void UPCommonPopupWidget::UpdatePopup()

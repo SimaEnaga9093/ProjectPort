@@ -41,6 +41,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonButton> CommonButtonCancel;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UButton> ButtonBG;
+
 public:
 	UFUNCTION()
 	void InitCommonPopup(FText TitleText, FText CommentText, bool ShowCancelButton);
