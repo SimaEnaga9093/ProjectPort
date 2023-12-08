@@ -4,6 +4,7 @@
 #include "ProjectPortGameModeBase.h"
 
 #include "UI/Module/PHUDWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 void AProjectPortGameModeBase::StartPlay()
 {
@@ -14,6 +15,10 @@ void AProjectPortGameModeBase::StartPlay()
 		MainHUDWidget = CreateWidget<UPHUDWidget>(GetWorld(), MainHUDWidgetClass);
 		MainHUDWidget->AddToViewport(0);
 	}
+
+    APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+    PC->SetShowMouseCursor(true);
+    PC->SetInputMode(FInputModeUIOnly());
 }
 
 UPHUDWidget* AProjectPortGameModeBase::OpenHUDWidget(const FString& HUDName, int ZOrder)
@@ -25,6 +30,9 @@ UPHUDWidget* AProjectPortGameModeBase::OpenHUDWidget(const FString& HUDName, int
     {
         UPHUDWidget* NewHUDWidget = CreateWidget<UPHUDWidget>(GetWorld(), NewHUDClass);
         NewHUDWidget->AddToViewport(ZOrder);
+
+        MainHUDWidget->RemoveFromParent();
+        MainHUDWidget = NewHUDWidget;
 
         return NewHUDWidget;
     }
