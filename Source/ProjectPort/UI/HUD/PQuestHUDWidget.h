@@ -10,6 +10,14 @@
 
 class UPCommonButton;
 
+UENUM()
+enum class EQuestHUDTabIndex : uint8
+{
+	E_Battle = 0,
+	E_Adventure = 1,
+	E_Craft = 2,
+};
+
 /**
  * Quest HUD
  */
@@ -25,9 +33,33 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UPCommonButton> CommonButtonBattle;
+	virtual void OnOpen() override;
 
 	UFUNCTION()
 	void OnCommonButtonBattleClicked();
+	UFUNCTION()
+	void OnCommonButtonAdventureClicked();
+	UFUNCTION()
+	void OnCommonButtonCraftClicked();
+
+	UFUNCTION()
+	void UpdateTabIndex();
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonBattle;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonAdventure;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonCraft;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPUserWidget> QuestBattle;
+
+	UPROPERTY()
+	EQuestHUDTabIndex TabIndex = EQuestHUDTabIndex::E_Battle;
+
+	UPROPERTY()
+	TArray<FText> TabNames;
 };
