@@ -8,6 +8,7 @@
 #include "ProjectPortGameModeBase.generated.h"
 
 class UPHUDWidget;
+class UPTopBarWidget;
 class UPPopupWidget;
 
 /**
@@ -22,15 +23,16 @@ public:
 	virtual void StartPlay() override;
 
 protected:
-	UFUNCTION()
-	void OnBackPressed();
-
 	// Need to set from blueprint
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UPHUDWidget> MainHUDWidgetClass;
-
 	UPROPERTY()
 	TSoftObjectPtr<UPHUDWidget> MainHUDWidget;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<UPTopBarWidget> TopBarWidgetClass;
+	UPROPERTY()
+	TSoftObjectPtr<UPTopBarWidget> TopBarWidget;
 
 	UPROPERTY()
 	TArray<TSoftObjectPtr<UPHUDWidget>> HUDWidgetHistory;
@@ -40,6 +42,9 @@ protected:
 
 public:
 	UFUNCTION()
+	void OnBackPressed();
+
+	UFUNCTION()
 	void ClosePopup(UPPopupWidget* TargetPopup);
 
 	UFUNCTION()
@@ -47,4 +52,7 @@ public:
 
 	UFUNCTION()
 	UPPopupWidget* OpenPopupWidget(const FString& PopupName);
+
+	UFUNCTION()
+	TSoftObjectPtr<UPTopBarWidget> GetTopBarWidget() { return TopBarWidget; }
 };

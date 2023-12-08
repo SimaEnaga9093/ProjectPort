@@ -3,10 +3,16 @@
 
 #include "PQuestHUDWidget.h"
 
-#include "Module/PCommonButton.h"
-#include "Module/PCommonPopupWidget.h"
+#include "../Module/PCommonButton.h"
+#include "../Module/PCommonPopupWidget.h"
 #include "Components/Button.h"
-#include "../ProjectPortGameModeBase.h"
+#include "../../ProjectPortGameModeBase.h"
+
+UPQuestHUDWidget::UPQuestHUDWidget(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	HUDNameText = FText::FromString("Quest");
+}
 
 void UPQuestHUDWidget::NativeConstruct()
 {

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "Module/PHUDWidget.h"
+#include "../Module/PHUDWidget.h"
 
 #include "PQuestHUDWidget.generated.h"
 
@@ -17,6 +17,9 @@ UCLASS()
 class PROJECTPORT_API UPQuestHUDWidget : public UPHUDWidget
 {
 	GENERATED_BODY()
+
+public:
+	UPQuestHUDWidget(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	virtual void NativeConstruct() override;

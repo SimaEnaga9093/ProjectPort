@@ -15,7 +15,11 @@ UCLASS()
 class PROJECTPORT_API UPHUDWidget : public UPUserWidget
 {
 	GENERATED_BODY()
-	
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FText HUDNameText;
+
 public:
 	UFUNCTION()
 	virtual void OnOpen();
@@ -28,4 +32,7 @@ public:
 
 	UFUNCTION()
 	virtual bool HandleBackAction();
+
+	UFUNCTION()
+	const FText& GetHUDNameText() { return HUDNameText; }
 };

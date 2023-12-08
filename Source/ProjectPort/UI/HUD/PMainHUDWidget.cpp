@@ -3,9 +3,15 @@
 
 #include "PMainHUDWidget.h"
 
-#include "Module/PCommonButton.h"
+#include "../Module/PCommonButton.h"
 #include "Components/Button.h"
-#include "../ProjectPortGameModeBase.h"
+#include "../../ProjectPortGameModeBase.h"
+
+UPMainHUDWidget::UPMainHUDWidget(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	HUDNameText = FText::FromString("");
+}
 
 void UPMainHUDWidget::NativeConstruct()
 {

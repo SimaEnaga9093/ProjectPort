@@ -4,6 +4,7 @@
 #include "ProjectPortGameModeBase.h"
 
 #include "UI/Module/PHUDWidget.h"
+#include "UI/PTopBarWidget.h"
 #include "UI/Module/PPopupWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -13,8 +14,15 @@ void AProjectPortGameModeBase::StartPlay()
 
 	if (MainHUDWidgetClass)
 	{
-	MainHUDWidget = CreateWidget<UPHUDWidget>(GetWorld(), MainHUDWidgetClass);
+		MainHUDWidget = CreateWidget<UPHUDWidget>(GetWorld(), MainHUDWidgetClass);
 		MainHUDWidget->AddToViewport(0);
+	}
+
+	if (TopBarWidgetClass)
+	{
+		TopBarWidget = CreateWidget<UPTopBarWidget>(GetWorld(), TopBarWidgetClass);
+		TopBarWidget->AddToViewport(0);
+		TopBarWidget->SetNameText(MainHUDWidget->GetHUDNameText());
 	}
 
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);

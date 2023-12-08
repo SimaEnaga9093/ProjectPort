@@ -3,9 +3,14 @@
 
 #include "PHUDWidget.h"
 
+#include "../../ProjectPortGameModeBase.h"
+#include "../PTopBarWidget.h"
+
 void UPHUDWidget::OnOpen()
 {
 	UE_LOG(LogTemp, Log, TEXT("UPHUDWidget::OnOpen %s"), *GetName());
+
+	GetPortGameMode()->GetTopBarWidget()->SetNameText(HUDNameText);
 }
 
 void UPHUDWidget::OnClose()
