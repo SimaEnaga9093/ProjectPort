@@ -8,6 +8,8 @@
 
 #include "PUserWidget.generated.h"
 
+class UPHUDWidget;
+
 /**
  * Base Class of Project's UserWidget
  */
@@ -15,5 +17,10 @@ UCLASS()
 class PROJECTPORT_API UPUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPUserWidget(const FObjectInitializer& ObjectInitializer);
+
+	UFUNCTION()
+	UPHUDWidget* OpenHUDWidget(const FString& HUDName, int ZOrder = 0);
 };
