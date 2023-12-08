@@ -8,6 +8,7 @@
 #include "ProjectPortGameModeBase.generated.h"
 
 class UPHUDWidget;
+class UPPopupWidget;
 
 /**
  * Base Gamemode of Project
@@ -30,10 +31,19 @@ protected:
 	UPROPERTY()
 	TArray<TSoftObjectPtr<UPHUDWidget>> HUDWidgetHistory;
 
+	UPROPERTY()
+	TArray<TSoftObjectPtr<UPPopupWidget>> PopupWidgetList;
+
 	UFUNCTION()
 	void OnBackPressed();
 
 public:
 	UFUNCTION()
 	UPHUDWidget* OpenHUDWidget(const FString& HUDName, int ZOrder = 0);
+
+	UFUNCTION()
+	UPPopupWidget* OpenPopupWidget(const FString& PopupName);
+
+	UFUNCTION()
+	void ClosePopup(UPPopupWidget* TargetPopup);
 };

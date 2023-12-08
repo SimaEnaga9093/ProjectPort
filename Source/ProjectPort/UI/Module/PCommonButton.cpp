@@ -31,7 +31,7 @@ void UPCommonButton::NativeConstruct()
 
 	if (ButtonBG)
 	{
-		ButtonBG->OnClicked.AddDynamic(this, &UPCommonButton::OnButtoBGClicked);
+		ButtonBG->OnClicked.AddDynamic(this, &UPCommonButton::OnButtonBGClicked);
 		UpdateButtonInputDelayState(false);
 	}
 }
@@ -42,7 +42,7 @@ void UPCommonButton::NativeDestruct()
 
 	if (ButtonBG)
 	{
-		ButtonBG->OnClicked.RemoveDynamic(this, &UPCommonButton::OnButtoBGClicked);
+		ButtonBG->OnClicked.RemoveDynamic(this, &UPCommonButton::OnButtonBGClicked);
 	}
 }
 
@@ -60,7 +60,7 @@ void UPCommonButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 }
 
-void UPCommonButton::OnButtoBGClicked()
+void UPCommonButton::OnButtonBGClicked()
 {
 	if (InputDelaySec > 0.0f)
 	{

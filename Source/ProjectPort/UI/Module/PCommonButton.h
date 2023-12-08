@@ -36,7 +36,7 @@ protected:
 	TSoftObjectPtr<UTextBlock> TextMain;
 
 	UFUNCTION()
-	void OnButtoBGClicked();
+	void OnButtonBGClicked();
 	
 	UFUNCTION()
 	void UpdateButtonInputDelayState(bool bActive);

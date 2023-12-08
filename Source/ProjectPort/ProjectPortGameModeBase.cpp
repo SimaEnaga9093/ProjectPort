@@ -4,6 +4,7 @@
 #include "ProjectPortGameModeBase.h"
 
 #include "UI/Module/PHUDWidget.h"
+#include "UI/Module/PPopupWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 void AProjectPortGameModeBase::StartPlay()
@@ -24,28 +25,38 @@ void AProjectPortGameModeBase::StartPlay()
 
 void AProjectPortGameModeBase::OnBackPressed()
 {
-    if (HUDWidgetHistory.IsEmpty())
-        return;
-
-    if (MainHUDWidget->HandleBackAction())
-        return;
-    MainHUDWidget->OnBack();
-    MainHUDWidget->RemoveFromParent();
-
-    TSoftObjectPtr<UPHUDWidget> LastHUDWidget = HUDWidgetHistory.Last();
-    if (LastHUDWidget)
+    if (!PopupWidgetList.IsEmpty())
     {
-        HUDWidgetHistory.Remove(LastHUDWidget);
 
-        LastHUDWidget->AddToViewport();
-        LastHUDWidget->OnOpen();
-        MainHUDWidget = LastHUDWidget;
+        TSoftObjectPtr<UPPopupWidget> LastPopupWidget = PopupWidgetList.Last();
+        if (LastPopupWidget)
+        {
+            ClosePopup(LastPopupWidget.Get());
+        }
+    }
+    else if (!HUDWidgetHistory.IsEmpty())
+    {
+        if (!MainHUDWidget->HandleBackAction())
+        {
+            MainHUDWidget->OnBack();
+            MainHUDWidget->RemoveFromParent();
+
+            TSoftObjectPtr<UPHUDWidget> LastHUDWidget = HUDWidgetHistory.Last();
+            if (LastHUDWidget)
+            {
+                HUDWidgetHistory.Remove(LastHUDWidget);
+
+                LastHUDWidget->AddToViewport();
+                LastHUDWidget->OnOpen();
+                MainHUDWidget = LastHUDWidget;
+            }
+        }
     }
 }
 
 UPHUDWidget* AProjectPortGameModeBase::OpenHUDWidget(const FString& HUDName, int ZOrder)
 {
-    const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/" + HUDName + "." + HUDName + "_C'");
+    const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HUD/" + HUDName + "." + HUDName + "_C'");
 
     FSoftClassPath HUDClassRef(Path);
     if (UClass* NewHUDClass = HUDClassRef.TryLoadClass<UPHUDWidget>())
@@ -63,4 +74,34 @@ UPHUDWidget* AProjectPortGameModeBase::OpenHUDWidget(const FString& HUDName, int
     }
 
     return nullptr;
+}
+
+UPPopupWidget* AProjectPortGameModeBase::OpenPopupWidget(const FString& PopupName)
+{
+    const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Popup/" + PopupName + "." + PopupName + "_C'");
+    
+    FSoftClassPath PopupClassRef(Path);
+    if (UClass* NewPopupClass = PopupClassRef.TryLoadClass<UPPopupWidget>())
+    {
+        UPPopupWidget* NewPopupWidget = CreateWidget<UPPopupWidget>(GetWorld(), NewPopupClass);
+        NewPopupWidget->AddToViewport(1);
+        NewPopupWidget->OnOpen();
+
+        PopupWidgetList.Add(NewPopupWidget);
+
+        return NewPopupWidget;
+    }
+
+    return nullptr;
+}
+
+void AProjectPortGameModeBase::ClosePopup(UPPopupWidget* TargetPopup)
+{
+    if (!TargetPopup->HandleCloseAction())
+    {
+        TargetPopup->OnClose();
+        TargetPopup->RemoveFromParent();
+
+        PopupWidgetList.Remove(TargetPopup);
+    }
 }

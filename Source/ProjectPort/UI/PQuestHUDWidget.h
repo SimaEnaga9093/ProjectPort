@@ -8,6 +8,8 @@
 
 #include "PQuestHUDWidget.generated.h"
 
+class UPCommonButton;
+
 /**
  * Quest HUD
  */
@@ -16,4 +18,13 @@ class PROJECTPORT_API UPQuestHUDWidget : public UPHUDWidget
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonBattle;
+
+	UFUNCTION()
+	void OnCommonButtonBattleClicked();
 };
