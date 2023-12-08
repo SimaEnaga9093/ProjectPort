@@ -22,6 +22,8 @@ class PROJECTPORT_API UPCommonButton : public UPUserWidget
 
 protected:
 	virtual void NativePreConstruct() override;
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<USizeBox> SizeBoxBG;
@@ -31,6 +33,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextMain;
+
+	UFUNCTION()
+	void OnButtoBGClicked();
+
+	bool ActivateInputDelay = false;
+	float InputDelayTimer = 0.0f;
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -42,7 +50,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TextSize;
 
-public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float InputDelaySec = 1.0f;
+
 	UFUNCTION()
 	TSoftObjectPtr<UButton> GetButtonBG() { return ButtonBG; }
 };
