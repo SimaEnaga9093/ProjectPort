@@ -5,7 +5,7 @@
 
 #include "Module/PCommonButton.h"
 #include "Components/Button.h"
-#include "PQuestHUDWidget.h"
+#include "../ProjectPortGameModeBase.h"
 
 void UPMainHUDWidget::NativeConstruct()
 {
@@ -19,5 +19,5 @@ void UPMainHUDWidget::NativeConstruct()
 
 void UPMainHUDWidget::OnButtonQuestClicked()
 {
-	OpenHUDWidget(TEXT("WBP_QuestHUD"), 0);
+	GetPortGameMode()->OpenHUDWidget(TEXT("WBP_QuestHUD"), 0);
 }

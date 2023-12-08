@@ -5,9 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 
-#include "UI/Module/PUserWidget.h"
-
 #include "ProjectPortGameModeBase.generated.h"
+
+class UPHUDWidget;
 
 /**
  * Base Gamemode of Project
@@ -22,8 +22,12 @@ class PROJECTPORT_API AProjectPortGameModeBase : public AGameModeBase
 protected:
 	// Need to set from blueprint
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TSubclassOf<UPUserWidget> MainHUDWidgetClass;
+	TSubclassOf<UPHUDWidget> MainHUDWidgetClass;
 
 	UPROPERTY()
-	TSoftObjectPtr<UPUserWidget> MainHUDWidget;
+	TSoftObjectPtr<UPHUDWidget> MainHUDWidget;
+
+public:
+	UFUNCTION()
+	UPHUDWidget* OpenHUDWidget(const FString& HUDName, int ZOrder = 0);
 };

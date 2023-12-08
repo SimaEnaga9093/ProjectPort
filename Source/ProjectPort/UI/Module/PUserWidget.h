@@ -8,8 +8,6 @@
 
 #include "PUserWidget.generated.h"
 
-class UPHUDWidget;
-
 /**
  * Base Class of Project's UserWidget
  */
@@ -22,5 +20,5 @@ public:
 	UPUserWidget(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION()
-	UPHUDWidget* OpenHUDWidget(const FString& HUDName, int ZOrder = 0);
+	AProjectPortGameModeBase* GetPortGameMode();
 };

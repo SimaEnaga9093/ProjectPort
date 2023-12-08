@@ -3,25 +3,15 @@
 
 #include "PUserWidget.h"
 
-#include "PHUDWidget.h"
+#include "Kismet/GameplayStatics.h"
+#include "../../ProjectPortGameModeBase.h"
 
 UPUserWidget::UPUserWidget(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
 }
 
-UPHUDWidget* UPUserWidget::OpenHUDWidget(const FString& HUDName, int ZOrder)
+AProjectPortGameModeBase* UPUserWidget::GetPortGameMode()
 {
-    const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/" + HUDName + "." + HUDName + "_C'");
-
-    FSoftClassPath HUDClassRef(Path);
-    if (UClass* NewHUDClass = HUDClassRef.TryLoadClass<UPHUDWidget>())
-    {
-        UPHUDWidget* NewHUDWidget = CreateWidget<UPHUDWidget>(GetWorld(), NewHUDClass);
-        NewHUDWidget->AddToViewport(ZOrder);
-
-        return NewHUDWidget;
-    }
-
-    return nullptr;
+    return Cast<AProjectPortGameModeBase>(UGameplayStatics::GetGameMode(this));
 }

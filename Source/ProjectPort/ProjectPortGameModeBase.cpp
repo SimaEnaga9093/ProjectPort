@@ -3,13 +3,31 @@
 
 #include "ProjectPortGameModeBase.h"
 
+#include "UI/Module/PHUDWidget.h"
+
 void AProjectPortGameModeBase::StartPlay()
 {
 	Super::StartPlay();
 
 	if (MainHUDWidgetClass)
 	{
-		MainHUDWidget = CreateWidget<UPUserWidget>(GetWorld(), MainHUDWidgetClass);
+		MainHUDWidget = CreateWidget<UPHUDWidget>(GetWorld(), MainHUDWidgetClass);
 		MainHUDWidget->AddToViewport(0);
 	}
+}
+
+UPHUDWidget* AProjectPortGameModeBase::OpenHUDWidget(const FString& HUDName, int ZOrder)
+{
+    const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/" + HUDName + "." + HUDName + "_C'");
+
+    FSoftClassPath HUDClassRef(Path);
+    if (UClass* NewHUDClass = HUDClassRef.TryLoadClass<UPHUDWidget>())
+    {
+        UPHUDWidget* NewHUDWidget = CreateWidget<UPHUDWidget>(GetWorld(), NewHUDClass);
+        NewHUDWidget->AddToViewport(ZOrder);
+
+        return NewHUDWidget;
+    }
+
+    return nullptr;
 }
