@@ -23,6 +23,7 @@ class PROJECTPORT_API UPCommonButton : public UPUserWidget
 protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -36,6 +37,9 @@ protected:
 
 	UFUNCTION()
 	void OnButtoBGClicked();
+	
+	UFUNCTION()
+	void UpdateButtonInputDelayState(bool bActive);
 
 	bool ActivateInputDelay = false;
 	float InputDelayTimer = 0.0f;

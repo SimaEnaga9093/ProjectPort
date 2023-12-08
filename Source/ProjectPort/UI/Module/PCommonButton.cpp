@@ -32,6 +32,17 @@ void UPCommonButton::NativeConstruct()
 	if (ButtonBG)
 	{
 		ButtonBG->OnClicked.AddDynamic(this, &UPCommonButton::OnButtoBGClicked);
+		UpdateButtonInputDelayState(false);
+	}
+}
+
+void UPCommonButton::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (ButtonBG)
+	{
+		ButtonBG->OnClicked.RemoveDynamic(this, &UPCommonButton::OnButtoBGClicked);
 	}
 }
 
@@ -44,10 +55,7 @@ void UPCommonButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 		InputDelayTimer += InDeltaTime;
 		if (InputDelayTimer > InputDelaySec)
 		{
-			ActivateInputDelay = false;
-			InputDelayTimer = 0.0f;
-
-			ButtonBG->SetVisibility(ESlateVisibility::Visible);
+			UpdateButtonInputDelayState(false);
 		}
 	}
 }
@@ -56,7 +64,22 @@ void UPCommonButton::OnButtoBGClicked()
 {
 	if (InputDelaySec > 0.0f)
 	{
-		ButtonBG->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		UpdateButtonInputDelayState(true);
+	}
+}
+
+void UPCommonButton::UpdateButtonInputDelayState(bool bActive)
+{
+	if (bActive)
+	{
 		ActivateInputDelay = true;
+		ButtonBG->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
+	else
+	{
+		ActivateInputDelay = false;
+		ButtonBG->SetVisibility(ESlateVisibility::Visible);
+
+		InputDelayTimer = 0.0f;
 	}
 }
