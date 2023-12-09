@@ -48,6 +48,9 @@ public:
 	UFUNCTION()
 	TSoftObjectPtr<UButton> GetButtonBG() { return ButtonBG; }
 
+	UFUNCTION()
+	void SetButtonEnabled(bool IsEnabled);
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector2D WidthHeightOverride;
 

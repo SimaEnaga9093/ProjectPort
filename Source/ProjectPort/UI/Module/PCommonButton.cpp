@@ -79,3 +79,8 @@ void UPCommonButton::UpdateButtonInputDelayState(bool bActive)
 		InputDelayTimer = 0.0f;
 	}
 }
+
+void UPCommonButton::SetButtonEnabled(bool IsEnabled)
+{
+	ButtonBG->SetIsEnabled(IsEnabled);
+}
