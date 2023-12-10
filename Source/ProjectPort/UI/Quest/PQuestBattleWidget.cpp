@@ -3,9 +3,38 @@
 
 #include "PQuestBattleWidget.h"
 
+#include "Engine/DataTable.h"
+#include "UObject/ConstructorHelpers.h"
 #include "../Module/PCommonTab.h"
-#include "../../ProjectPortGameModeBase.h"
-#include "../Module/PCommonPopupWidget.h"
+#include "PQuestBattleEntryWidget.h"
+#include "Components/ListView.h"
+
+UPQuestBattleWidget::UPQuestBattleWidget(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	static ConstructorHelpers::FObjectFinder<UDataTable> DataObject(TEXT("/Game/Data/DT_QuestBattleShowdowns"));
+	if (DataObject.Succeeded())
+	{
+		UDataTable* DataTable = DataObject.Object;
+
+		TArray<FName> Datas = DataTable->GetRowNames();
+		for (int i = 0; i < Datas.Num(); i++)
+		{
+			const FString& ContextString = TEXT("UPQuestBattleWidget::NativePreConstruct");
+			FPQuestBattleShowdowns* Data = DataTable->FindRow<FPQuestBattleShowdowns>(Datas[i], ContextString);
+
+			if (!QuestBattleShowdowns.Contains(Data->Category))
+				QuestBattleShowdowns.Add(Data->Category, FQuestBattleEntries());
+
+			QuestBattleShowdowns[Data->Category].Entries.Add(*Data);
+		}
+	}
+}
+
+void UPQuestBattleWidget::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+}
 
 void UPQuestBattleWidget::NativeConstruct()
 {
@@ -27,12 +56,30 @@ void UPQuestBattleWidget::NativeDestruct()
 
 void UPQuestBattleWidget::OnTabClicked(int TabIndex)
 {
+	CurrentTab = TabIndex;
+	UpdateListView();
+
 	//UPCommonPopupWidget* Popup = Cast<UPCommonPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_CommonPopup")));
 	//Popup->InitCommonPopup(FText::FromString("NOTICE"), FText::FromString(FString::FromInt(TabIndex)), false);
 }
 
 void UPQuestBattleWidget::UpdateListView()
 {
+	ListViewEntries->ClearListItems();
+
+	TArray<FPQuestBattleShowdowns> Datas = QuestBattleShowdowns[(EQuestBattleCategory)CurrentTab].Entries;
+
+	const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Battle/WBP_QuestBattleEntry.WBP_QuestBattleEntry_C'");
+	FSoftClassPath WidgetClassRef(Path);
+	if (UClass* WidgetClass = WidgetClassRef.TryLoadClass<UPQuestBattleEntryWidget>())
+	{
+		for (int i = 0; i < Datas.Num(); i++)
+		{
+			UPQuestBattleEntryWidget* EntryWidget = CreateWidget<UPQuestBattleEntryWidget>(GetWorld(), WidgetClass);
+			EntryWidget->InitEntry(Datas[i]);
+			ListViewEntries->AddItem(EntryWidget);
+		}
+	}
 }
 
 void UPQuestBattleWidget::UpdateInfoView()

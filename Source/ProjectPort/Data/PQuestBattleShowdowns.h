@@ -7,6 +7,13 @@
 
 #include "PQuestBattleShowdowns.generated.h"
 
+UENUM(BlueprintType)
+enum class EQuestBattleCategory : uint8
+{
+	E_Showdowns = 0 UMETA(DisplayName = "Showdowns"),
+	E_Abyss = 1 UMETA(DisplayName = "Abyss"),
+};
+
 /**
  * Data for quest - battle - showdowns
  */
@@ -18,6 +25,9 @@ struct PROJECTPORT_API FPQuestBattleShowdowns : public FTableRowBase
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText TitleName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EQuestBattleCategory Category;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Desc;

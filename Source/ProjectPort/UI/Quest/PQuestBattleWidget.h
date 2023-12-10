@@ -5,10 +5,22 @@
 #include "CoreMinimal.h"
 
 #include "../Module/PUserWidget.h"
+#include "../../Data/PQuestBattleShowdowns.h"
 
 #include "PQuestBattleWidget.generated.h"
 
 class UPCommonTab;
+class UDataTable;
+class UListView;
+
+USTRUCT()
+struct FQuestBattleEntries
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY()
+	TArray<FPQuestBattleShowdowns> Entries;
+};
 
 /**
  * Quest-Battle Widget
@@ -18,7 +30,11 @@ class PROJECTPORT_API UPQuestBattleWidget : public UPUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UPQuestBattleWidget(const FObjectInitializer& ObjectInitializer);
+
 protected:
+	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
@@ -33,4 +49,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonTab> CommonTab;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UListView> ListViewEntries;
+
+	UPROPERTY()
+	TMap<EQuestBattleCategory, FQuestBattleEntries> QuestBattleShowdowns;
+
+	int CurrentTab;
 };
