@@ -25,6 +25,12 @@ protected:
 	UFUNCTION()
 	void OnTabClicked(int TabIndex);
 
+	UFUNCTION()
+	void UpdateListView();
+
+	UFUNCTION()
+	void UpdateInfoView();
+
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonTab> CommonTab;
 };

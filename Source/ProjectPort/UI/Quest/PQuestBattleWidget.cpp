@@ -13,6 +13,8 @@ void UPQuestBattleWidget::NativeConstruct()
 
 	if (CommonTab)
 		CommonTab->OnClicked.AddDynamic(this, &UPQuestBattleWidget::OnTabClicked);
+
+	CommonTab->OnTabClicked(0);
 }
 
 void UPQuestBattleWidget::NativeDestruct()
@@ -25,6 +27,14 @@ void UPQuestBattleWidget::NativeDestruct()
 
 void UPQuestBattleWidget::OnTabClicked(int TabIndex)
 {
-	UPCommonPopupWidget* Popup = Cast<UPCommonPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_CommonPopup")));
-	Popup->InitCommonPopup(FText::FromString("NOTICE"), FText::FromString(FString::FromInt(TabIndex)), false);
+	//UPCommonPopupWidget* Popup = Cast<UPCommonPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_CommonPopup")));
+	//Popup->InitCommonPopup(FText::FromString("NOTICE"), FText::FromString(FString::FromInt(TabIndex)), false);
+}
+
+void UPQuestBattleWidget::UpdateListView()
+{
+}
+
+void UPQuestBattleWidget::UpdateInfoView()
+{
 }
