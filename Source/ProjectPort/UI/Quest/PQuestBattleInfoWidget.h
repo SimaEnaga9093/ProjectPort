@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "../Module/PUserWidget.h"
+#include "../../Data/PQuestBattleShowdowns.h"
 
 #include "PQuestBattleInfoWidget.generated.h"
 
@@ -22,6 +23,8 @@ class PROJECTPORT_API UPQuestBattleInfoWidget : public UPUserWidget
 protected:
 	virtual void NativePreConstruct() override;
 
+	void UpdateInfoWidget();
+
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextTitle;
 
@@ -32,7 +35,8 @@ protected:
 	TSoftObjectPtr<UTextBlock> TextDesc;
 
 public:
-	void UpdateInfoWidget();
+	UFUNCTION()
+	void InitWidget(FPQuestBattleShowdowns Data);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText TitleText;

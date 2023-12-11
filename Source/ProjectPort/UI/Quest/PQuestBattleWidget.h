@@ -6,6 +6,7 @@
 
 #include "../Module/PUserWidget.h"
 #include "../../Data/PQuestBattleShowdowns.h"
+#include "PQuestBattleInfoWidget.h"
 
 #include "PQuestBattleWidget.generated.h"
 
@@ -33,6 +34,9 @@ class PROJECTPORT_API UPQuestBattleWidget : public UPUserWidget
 public:
 	UPQuestBattleWidget(const FObjectInitializer& ObjectInitializer);
 
+	UFUNCTION()
+	void OnListClicked(FPQuestBattleShowdowns EntryData);
+
 protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
@@ -44,14 +48,14 @@ protected:
 	UFUNCTION()
 	void UpdateListView();
 
-	UFUNCTION()
-	void UpdateInfoView();
-
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonTab> CommonTab;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UListView> ListViewEntries;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPQuestBattleInfoWidget> QuestBattleInfo;
 
 	UPROPERTY()
 	TMap<EQuestBattleCategory, FQuestBattleEntries> QuestBattleShowdowns;

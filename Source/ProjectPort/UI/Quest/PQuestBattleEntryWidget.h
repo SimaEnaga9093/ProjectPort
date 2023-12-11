@@ -7,6 +7,7 @@
 #include "../Module/PUserWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "../../Data/PQuestBattleShowdowns.h"
+#include "PQuestBattleWidget.h"
 
 #include "PQuestBattleEntryWidget.generated.h"
 
@@ -25,7 +26,7 @@ public:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	
 	UFUNCTION()
-	void InitEntry(FPQuestBattleShowdowns Data);
+	void InitEntry(FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -44,4 +45,7 @@ protected:
 	FText NameText;
 
 	FPQuestBattleShowdowns EntryData;
+
+	UPROPERTY()
+	TSoftObjectPtr<UPQuestBattleWidget> ParentWidget;
 };

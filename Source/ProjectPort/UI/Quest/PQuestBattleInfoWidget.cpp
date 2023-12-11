@@ -18,5 +18,14 @@ void UPQuestBattleInfoWidget::UpdateInfoWidget()
 	TextTitle->SetText(TitleText);
 	TextDesc->SetText(DescText);
 
-	ImageBanner->SetBrushFromTexture(BannerImage.Get(), true);
+	ImageBanner->SetBrushFromTexture(BannerImage.LoadSynchronous(), true);
+}
+
+void UPQuestBattleInfoWidget::InitWidget(FPQuestBattleShowdowns Data)
+{
+	TitleText = Data.TitleName;
+	DescText = Data.Desc;
+	BannerImage = Data.BannerImage;
+
+	UpdateInfoWidget();
 }

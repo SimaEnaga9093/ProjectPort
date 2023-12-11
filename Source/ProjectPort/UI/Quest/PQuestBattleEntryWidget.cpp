@@ -12,13 +12,15 @@ void UPQuestBattleEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject
 
 	UPQuestBattleEntryWidget* Obj = Cast<UPQuestBattleEntryWidget>(ListItemObject);
 	EntryData = Obj->EntryData;
+	ParentWidget = Obj->ParentWidget;
 
 	TextName->SetText(EntryData.TitleName);
 }
 
-void UPQuestBattleEntryWidget::InitEntry(FPQuestBattleShowdowns Data)
+void UPQuestBattleEntryWidget::InitEntry(FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent)
 {
 	EntryData = Data;
+	ParentWidget = Parent;
 }
 
 void UPQuestBattleEntryWidget::NativeConstruct()
@@ -39,5 +41,5 @@ void UPQuestBattleEntryWidget::NativeDestruct()
 
 void UPQuestBattleEntryWidget::OnButtonClicked()
 {
-	
+	ParentWidget->OnListClicked(EntryData);
 }

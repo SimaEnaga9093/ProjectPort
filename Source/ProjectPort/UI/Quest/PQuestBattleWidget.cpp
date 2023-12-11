@@ -58,9 +58,6 @@ void UPQuestBattleWidget::OnTabClicked(int TabIndex)
 {
 	CurrentTab = TabIndex;
 	UpdateListView();
-
-	//UPCommonPopupWidget* Popup = Cast<UPCommonPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_CommonPopup")));
-	//Popup->InitCommonPopup(FText::FromString("NOTICE"), FText::FromString(FString::FromInt(TabIndex)), false);
 }
 
 void UPQuestBattleWidget::UpdateListView()
@@ -76,12 +73,15 @@ void UPQuestBattleWidget::UpdateListView()
 		for (int i = 0; i < Datas.Num(); i++)
 		{
 			UPQuestBattleEntryWidget* EntryWidget = CreateWidget<UPQuestBattleEntryWidget>(GetWorld(), WidgetClass);
-			EntryWidget->InitEntry(Datas[i]);
+			EntryWidget->InitEntry(Datas[i], this);
 			ListViewEntries->AddItem(EntryWidget);
 		}
 	}
+
+	OnListClicked(Datas[0]);
 }
 
-void UPQuestBattleWidget::UpdateInfoView()
+void UPQuestBattleWidget::OnListClicked(FPQuestBattleShowdowns EntryData)
 {
+	QuestBattleInfo->InitWidget(EntryData);
 }
