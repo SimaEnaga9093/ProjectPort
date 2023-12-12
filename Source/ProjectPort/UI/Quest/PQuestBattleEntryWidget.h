@@ -13,6 +13,7 @@
 
 class UTextBlock;
 class UButton;
+class UImage;
 
 /**
  * Quest-Battle list entry Widget
@@ -26,11 +27,12 @@ public:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	
 	UFUNCTION()
-	void InitEntry(FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent);
+	void InitEntry(int32 EntryIndex, FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent);
 
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual void NativeOnItemSelectionChanged(bool bIsSelected) override;
 
 	UFUNCTION()
 	void OnButtonClicked();
@@ -41,8 +43,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UButton> ButtonBG;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UImage> ImageSelected;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText NameText;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool IsSelected;
+
+	int32 Index;
 
 	FPQuestBattleShowdowns EntryData;
 

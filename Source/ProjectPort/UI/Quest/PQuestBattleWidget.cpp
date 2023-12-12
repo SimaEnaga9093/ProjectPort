@@ -73,15 +73,16 @@ void UPQuestBattleWidget::UpdateListView()
 		for (int i = 0; i < Datas.Num(); i++)
 		{
 			UPQuestBattleEntryWidget* EntryWidget = CreateWidget<UPQuestBattleEntryWidget>(GetWorld(), WidgetClass);
-			EntryWidget->InitEntry(Datas[i], this);
+			EntryWidget->InitEntry(i, Datas[i], this);
 			ListViewEntries->AddItem(EntryWidget);
 		}
 	}
 
-	OnListClicked(Datas[0]);
+	OnListClicked(Datas[0], 0);
 }
 
-void UPQuestBattleWidget::OnListClicked(FPQuestBattleShowdowns EntryData)
+void UPQuestBattleWidget::OnListClicked(FPQuestBattleShowdowns EntryData, int32 Index)
 {
 	QuestBattleInfo->InitWidget(EntryData);
+	ListViewEntries->SetSelectedIndex(Index);
 }

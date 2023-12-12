@@ -35,7 +35,7 @@ public:
 	UPQuestBattleWidget(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION()
-	void OnListClicked(FPQuestBattleShowdowns EntryData);
+	void OnListClicked(FPQuestBattleShowdowns EntryData, int32 Index);
 
 protected:
 	virtual void NativePreConstruct() override;

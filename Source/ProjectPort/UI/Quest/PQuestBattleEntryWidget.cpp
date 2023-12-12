@@ -5,20 +5,24 @@
 
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 
 void UPQuestBattleEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
 
 	UPQuestBattleEntryWidget* Obj = Cast<UPQuestBattleEntryWidget>(ListItemObject);
+	Index = Obj->Index;
 	EntryData = Obj->EntryData;
 	ParentWidget = Obj->ParentWidget;
 
 	TextName->SetText(EntryData.TitleName);
+	ImageSelected->SetVisibility(ESlateVisibility::Collapsed);
 }
 
-void UPQuestBattleEntryWidget::InitEntry(FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent)
+void UPQuestBattleEntryWidget::InitEntry(int32 EntryIndex, FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent)
 {
+	Index = EntryIndex;
 	EntryData = Data;
 	ParentWidget = Parent;
 }
@@ -39,7 +43,12 @@ void UPQuestBattleEntryWidget::NativeDestruct()
 		ButtonBG->OnClicked.RemoveDynamic(this, &UPQuestBattleEntryWidget::OnButtonClicked);
 }
 
+void UPQuestBattleEntryWidget::NativeOnItemSelectionChanged(bool bIsSelected)
+{
+	ImageSelected->SetVisibility(bIsSelected ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+}
+
 void UPQuestBattleEntryWidget::OnButtonClicked()
 {
-	ParentWidget->OnListClicked(EntryData);
+	ParentWidget->OnListClicked(EntryData, Index);
 }
