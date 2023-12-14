@@ -33,9 +33,6 @@ class PROJECTPORT_API UPQuestBattleWidget : public UPUserWidget
 
 public:
 	UPQuestBattleWidget(const FObjectInitializer& ObjectInitializer);
-
-	UFUNCTION()
-	void OnListClicked(FPQuestBattleShowdowns EntryData, int32 Index);
 	
 	UFUNCTION()
 	void OnListViewClicked(UObject* Item);

@@ -72,36 +72,21 @@ void UPQuestBattleWidget::UpdateListView()
 	ListViewEntries->ClearListItems();
 
 	TArray<FPQuestBattleShowdowns> Datas = QuestBattleShowdowns[(EQuestBattleCategory)CurrentTab].Entries;
-
-	const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Battle/WBP_QuestBattleEntry.WBP_QuestBattleEntry_C'");
-	FSoftClassPath WidgetClassRef(Path);
-	if (UClass* WidgetClass = WidgetClassRef.TryLoadClass<UPQuestBattleEntryWidget>())
+	for (int i = 0; i < Datas.Num(); i++)
 	{
-		for (int i = 0; i < Datas.Num(); i++)
-		{
-			UPQuestBattleEntryWidget* EntryWidget = CreateWidget<UPQuestBattleEntryWidget>(GetWorld(), WidgetClass);
-			EntryWidget->InitEntry(i, Datas[i], this);
-			ListViewEntries->AddItem(EntryWidget);
+		UPQuestBattleEntryData* Item = NewObject<UPQuestBattleEntryData>();
+		Item->EntryData = Datas[i];
+		ListViewEntries->AddItem(Item);
 
-			if (i == 0)
-			{
-				ListViewEntries->SetSelectedItem(EntryWidget);
-				OnListViewClicked(EntryWidget);
-			}
-		}
+		if (i == 0)
+			OnListViewClicked(Item);
 	}
-}
-
-void UPQuestBattleWidget::OnListClicked(FPQuestBattleShowdowns EntryData, int32 Index)
-{
-	QuestBattleInfo->InitWidget(EntryData);
-	ListViewEntries->SetSelectedIndex(Index);
 }
 
 void UPQuestBattleWidget::OnListViewClicked(UObject* Item)
 {
-	UPQuestBattleEntryWidget* Obj = Cast<UPQuestBattleEntryWidget>(Item);
-	const FPQuestBattleShowdowns& EntryData = Obj->GetEntryData();
+	UPQuestBattleEntryData* Obj = Cast<UPQuestBattleEntryData>(Item);
+	QuestBattleInfo->InitWidget(Obj->EntryData);
 
-	QuestBattleInfo->InitWidget(EntryData);
+	ListViewEntries->SetSelectedItem(Item);
 }

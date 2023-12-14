@@ -12,8 +12,18 @@
 #include "PQuestBattleEntryWidget.generated.h"
 
 class UTextBlock;
-class UButton;
 class UImage;
+
+UCLASS()
+class PROJECTPORT_API UPQuestBattleEntryData : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPQuestBattleEntryData() {}
+
+	FPQuestBattleShowdowns EntryData;
+};
 
 /**
  * Quest-Battle list entry Widget
@@ -23,28 +33,12 @@ class PROJECTPORT_API UPQuestBattleEntryWidget : public UPUserWidget, public IUs
 {
 	GENERATED_BODY()
 
-public:
-	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
-	
-	UFUNCTION()
-	void InitEntry(int32 EntryIndex, FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent);
-
-	UFUNCTION()
-	const FPQuestBattleShowdowns& GetEntryData() { return EntryData; }
-
 protected:
-	virtual void NativeConstruct() override;
-	virtual void NativeDestruct() override;
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	virtual void NativeOnItemSelectionChanged(bool bIsSelected) override;
-
-	UFUNCTION()
-	void OnButtonClicked();
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextName;
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UButton> ButtonBG;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UImage> ImageSelected;
@@ -52,13 +46,5 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText NameText;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool IsSelected;
-
-	int32 Index;
-
 	FPQuestBattleShowdowns EntryData;
-
-	UPROPERTY()
-	TSoftObjectPtr<UPQuestBattleWidget> ParentWidget;
 };
