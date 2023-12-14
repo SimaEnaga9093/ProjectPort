@@ -41,9 +41,13 @@ void UPQuestBattleWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	if (CommonTab)
+	{
 		CommonTab->OnClicked.AddDynamic(this, &UPQuestBattleWidget::OnTabClicked);
+		CommonTab->OnTabClicked(0);
+	}
 
-	CommonTab->OnTabClicked(0);
+	if (ListViewEntries)
+		ListViewEntries->OnItemClicked().AddUObject(this, &UPQuestBattleWidget::OnListViewClicked);
 }
 
 void UPQuestBattleWidget::NativeDestruct()
@@ -52,6 +56,9 @@ void UPQuestBattleWidget::NativeDestruct()
 
 	if (CommonTab)
 		CommonTab->OnClicked.RemoveDynamic(this, &UPQuestBattleWidget::OnTabClicked);
+
+	if (ListViewEntries)
+		ListViewEntries->OnItemClicked().Clear();
 }
 
 void UPQuestBattleWidget::OnTabClicked(int TabIndex)
@@ -75,14 +82,26 @@ void UPQuestBattleWidget::UpdateListView()
 			UPQuestBattleEntryWidget* EntryWidget = CreateWidget<UPQuestBattleEntryWidget>(GetWorld(), WidgetClass);
 			EntryWidget->InitEntry(i, Datas[i], this);
 			ListViewEntries->AddItem(EntryWidget);
+
+			if (i == 0)
+			{
+				ListViewEntries->SetSelectedItem(EntryWidget);
+				OnListViewClicked(EntryWidget);
+			}
 		}
 	}
-
-	OnListClicked(Datas[0], 0);
 }
 
 void UPQuestBattleWidget::OnListClicked(FPQuestBattleShowdowns EntryData, int32 Index)
 {
 	QuestBattleInfo->InitWidget(EntryData);
 	ListViewEntries->SetSelectedIndex(Index);
+}
+
+void UPQuestBattleWidget::OnListViewClicked(UObject* Item)
+{
+	UPQuestBattleEntryWidget* Obj = Cast<UPQuestBattleEntryWidget>(Item);
+	const FPQuestBattleShowdowns& EntryData = Obj->GetEntryData();
+
+	QuestBattleInfo->InitWidget(EntryData);
 }

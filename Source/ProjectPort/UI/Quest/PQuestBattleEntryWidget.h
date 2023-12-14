@@ -29,6 +29,9 @@ public:
 	UFUNCTION()
 	void InitEntry(int32 EntryIndex, FPQuestBattleShowdowns Data, UPQuestBattleWidget* Parent);
 
+	UFUNCTION()
+	const FPQuestBattleShowdowns& GetEntryData() { return EntryData; }
+
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;

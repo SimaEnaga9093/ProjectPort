@@ -36,6 +36,9 @@ public:
 
 	UFUNCTION()
 	void OnListClicked(FPQuestBattleShowdowns EntryData, int32 Index);
+	
+	UFUNCTION()
+	void OnListViewClicked(UObject* Item);
 
 protected:
 	virtual void NativePreConstruct() override;
