@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FString Name;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftObjectPtr<UTexture2D> IconImage;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	EContentCharacterJob Job;
 };

@@ -8,8 +8,10 @@
 
 #include "PManageHUDWidget.generated.h"
 
+class UTileView;
+
 /**
- * Party HUD
+ * Manage HUD
  */
 UCLASS()
 class PROJECTPORT_API UPManageHUDWidget : public UPHUDWidget
@@ -21,4 +23,7 @@ public:
 
 protected:
 	virtual void OnOpen() override;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UTileView> TileViewEntries;
 };
