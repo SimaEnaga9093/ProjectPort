@@ -22,6 +22,9 @@ void UPMainHUDWidget::NativeConstruct()
 
 	if (CommonButtonParty)
 		CommonButtonParty->GetButtonBG()->OnClicked.AddDynamic(this, &UPMainHUDWidget::OnButtonPartyClicked);
+
+	if (CommonButtonManage)
+		CommonButtonManage->GetButtonBG()->OnClicked.AddDynamic(this, &UPMainHUDWidget::OnButtonManageClicked);
 }
 
 void UPMainHUDWidget::NativeDestruct()
@@ -33,6 +36,9 @@ void UPMainHUDWidget::NativeDestruct()
 
 	if (CommonButtonParty)
 		CommonButtonParty->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPMainHUDWidget::OnButtonPartyClicked);
+
+	if (CommonButtonManage)
+		CommonButtonManage->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPMainHUDWidget::OnButtonManageClicked);
 }
 
 void UPMainHUDWidget::OnButtonQuestClicked()
@@ -43,4 +49,9 @@ void UPMainHUDWidget::OnButtonQuestClicked()
 void UPMainHUDWidget::OnButtonPartyClicked()
 {
 	GetPortGameMode()->OpenHUDWidget(TEXT("WBP_PartyHUD"), 0);
+}
+
+void UPMainHUDWidget::OnButtonManageClicked()
+{
+	GetPortGameMode()->OpenHUDWidget(TEXT("WBP_ManageHUD"), 0);
 }

@@ -31,9 +31,15 @@ protected:
 	UFUNCTION()
 	void OnButtonPartyClicked();
 
+	UFUNCTION()
+	void OnButtonManageClicked();
+
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonButton> CommonButtonQuest;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonButton> CommonButtonParty;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonManage;
 };
