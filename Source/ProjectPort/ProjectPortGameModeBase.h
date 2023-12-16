@@ -10,6 +10,7 @@
 class UPHUDWidget;
 class UPTopBarWidget;
 class UPPopupWidget;
+class UPToastMessageWidget;
 
 /**
  * Base Gamemode of Project
@@ -40,12 +41,17 @@ protected:
 	UPROPERTY()
 	TArray<TSoftObjectPtr<UPPopupWidget>> PopupWidgetList;
 
+	UPROPERTY()
+	TSoftObjectPtr<UPToastMessageWidget> CachedToastMessageWidget;
+	UPROPERTY()
+	TArray<FText> ToastMessageTextQueue;
+
 public:
 	UFUNCTION()
 	void OnBackPressed();
 
 	UFUNCTION()
-	void ClosePopup(UPPopupWidget* TargetPopup);
+	TSoftObjectPtr<UPTopBarWidget> GetTopBarWidget() { return TopBarWidget; }
 
 	UFUNCTION()
 	UPHUDWidget* OpenHUDWidget(const FString& HUDName, int ZOrder = 0);
@@ -54,5 +60,12 @@ public:
 	UPPopupWidget* OpenPopupWidget(const FString& PopupName);
 
 	UFUNCTION()
-	TSoftObjectPtr<UPTopBarWidget> GetTopBarWidget() { return TopBarWidget; }
+	void ClosePopup(UPPopupWidget* TargetPopup);
+
+	UFUNCTION()
+	void OpenToastMessageWidget(FText ShownMessage);
+
+	UFUNCTION()
+	void CloaseToastMessageWidget();
+
 };

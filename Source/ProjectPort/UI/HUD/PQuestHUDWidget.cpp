@@ -71,7 +71,11 @@ void UPQuestHUDWidget::OnCommonButtonAdventureClicked()
 void UPQuestHUDWidget::OnCommonButtonCraftClicked()
 {
 	TabIndex = EQuestHUDTabIndex::E_Craft;
-	UpdateTabIndex();
+	//UpdateTabIndex();
+
+	GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Not Development Yet")));
+	GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Quest Mode Will Released")));
+	GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("To be Continued...")));
 }
 
 void UPQuestHUDWidget::UpdateTabIndex()

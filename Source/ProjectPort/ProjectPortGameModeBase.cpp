@@ -6,6 +6,7 @@
 #include "UI/Module/PHUDWidget.h"
 #include "UI/PTopBarWidget.h"
 #include "UI/Module/PPopupWidget.h"
+#include "UI/Module/PToastMessageWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 void AProjectPortGameModeBase::StartPlay()
@@ -33,15 +34,21 @@ void AProjectPortGameModeBase::StartPlay()
 
 void AProjectPortGameModeBase::OnBackPressed()
 {
-	if (!PopupWidgetList.IsEmpty())
+	// Release Message First
+	if (CachedToastMessageWidget->IsShowned())
 	{
-
+		CloaseToastMessageWidget();
+	}
+	// Release Popup Second
+	else if (!PopupWidgetList.IsEmpty())
+	{
 		TSoftObjectPtr<UPPopupWidget> LastPopupWidget = PopupWidgetList.Last();
 		if (LastPopupWidget)
 		{
 			ClosePopup(LastPopupWidget.Get());
 		}
 	}
+	// Release HUD Third
 	else if (!HUDWidgetHistory.IsEmpty())
 	{
 		if (!MainHUDWidget->HandleBackAction())
@@ -111,5 +118,48 @@ void AProjectPortGameModeBase::ClosePopup(UPPopupWidget* TargetPopup)
 		TargetPopup->RemoveFromParent();
 
 		PopupWidgetList.Remove(TargetPopup);
+	}
+}
+
+void AProjectPortGameModeBase::OpenToastMessageWidget(FText ShownMessage)
+{
+	if (!CachedToastMessageWidget)
+	{
+		const FString& Path = TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Module/WBP_ToastMessage.WBP_ToastMessage_C'");
+
+		FSoftClassPath ToastClassRef(Path);
+		if (UClass* NewToastClass = ToastClassRef.TryLoadClass<UPToastMessageWidget>())
+			CachedToastMessageWidget = CreateWidget<UPToastMessageWidget>(GetWorld(), NewToastClass);
+	}
+
+	if (CachedToastMessageWidget->IsShowned())
+	{
+		ToastMessageTextQueue.Add(ShownMessage);
+	}
+	else
+	{
+		CachedToastMessageWidget->MessageText = ShownMessage;
+		CachedToastMessageWidget->OpenToastMessage();
+
+		if (!CachedToastMessageWidget->IsVisible())
+			CachedToastMessageWidget->AddToViewport(10);
+	}
+}
+
+void AProjectPortGameModeBase::CloaseToastMessageWidget()
+{
+	if (!CachedToastMessageWidget)
+		return;
+
+	CachedToastMessageWidget->CloaseToastMessage();
+
+	if (!ToastMessageTextQueue.IsEmpty())
+	{
+		OpenToastMessageWidget(ToastMessageTextQueue[0]);
+		ToastMessageTextQueue.RemoveAt(0);
+	}
+	else
+	{
+		CachedToastMessageWidget->RemoveFromParent();
 	}
 }
