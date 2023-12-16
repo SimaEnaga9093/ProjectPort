@@ -35,7 +35,7 @@ void AProjectPortGameModeBase::StartPlay()
 void AProjectPortGameModeBase::OnBackPressed()
 {
 	// Release Message First
-	if (CachedToastMessageWidget->IsShowned())
+	if (CachedToastMessageWidget && CachedToastMessageWidget->IsShowned())
 	{
 		CloaseToastMessageWidget();
 	}
