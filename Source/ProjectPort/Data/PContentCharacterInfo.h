@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 
 #include "PContentCharacterInfo.generated.h"
 
@@ -11,15 +12,15 @@ enum class EContentCharacterJob : uint8
 {
 	E_Tanker = 0 UMETA(DisplayName = "Tanker"),
 	E_Melee = 1 UMETA(DisplayName = "Melee"),
-	E_Range = 1 UMETA(DisplayName = "Range"),
-	E_Healer = 1 UMETA(DisplayName = "Healer"),
+	E_Range = 2 UMETA(DisplayName = "Range"),
+	E_Healer = 3 UMETA(DisplayName = "Healer"),
 };
 
 /**
  * Data for content - character - info
  */
 USTRUCT(BlueprintType)
-struct PROJECTPORT_API FPContentCharacterInfo
+struct PROJECTPORT_API FPContentCharacterInfo : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -32,14 +33,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	EContentCharacterJob Job;
-};
-
-USTRUCT(BlueprintType)
-struct PROJECTPORT_API FPContentCharacterInfoDataArray
-{
-	GENERATED_USTRUCT_BODY()
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<FPContentCharacterInfo> DataArray;
 };
