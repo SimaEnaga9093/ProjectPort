@@ -4,10 +4,12 @@
 #include "PManageHUDWidget.h"
 
 #include "Components/Button.h"
+#include "Components/TileView.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DataTable.h"
-#include "UObject/ConstructorHelpers.h"
 #include "../../Data/PPortSaveGame.h"
+#include "../Manage/PManageEntryWidget.h"
+#include "UObject/ConstructorHelpers.h"
 
 UPManageHUDWidget::UPManageHUDWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -49,13 +51,14 @@ void UPManageHUDWidget::OnOpen()
 
 void UPManageHUDWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
 {
-	// TODO
-	UPPortSaveGame* SaveGame = Cast<UPPortSaveGame>(LoadedGameData);
+	TileViewEntries->ClearListItems();
 
+	UPPortSaveGame* SaveGame = Cast<UPPortSaveGame>(LoadedGameData);
 	for (int i = 0; i < SaveGame->Characters.Num(); i++)
 	{
-		FPContentCharacterInfo r = SaveGame->Characters[i];
-		UE_LOG(LogTemp, Log, TEXT("%s %d"), *r.Name, (int)r.Job);
+		UPManageEntryData* Item = NewObject<UPManageEntryData>();
+		Item->EntryData = SaveGame->Characters[i];
+		TileViewEntries->AddItem(Item);
 	}
 }
 
