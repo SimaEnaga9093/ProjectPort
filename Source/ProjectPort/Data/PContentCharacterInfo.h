@@ -16,6 +16,15 @@ enum class EContentCharacterJob : uint8
 	E_Healer = 3 UMETA(DisplayName = "Healer"),
 };
 
+UENUM(BlueprintType)
+enum class EContentCharacterStat : uint8
+{
+	E_STR = 0 UMETA(DisplayName = "STR"),
+	E_DEX = 1 UMETA(DisplayName = "DEX"),
+	E_INT = 2 UMETA(DisplayName = "INT"),
+	E_MND = 3 UMETA(DisplayName = "MND"),
+};
+
 /**
  * Data for content - character - info
  */

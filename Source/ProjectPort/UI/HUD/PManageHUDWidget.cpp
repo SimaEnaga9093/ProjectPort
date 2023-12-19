@@ -10,6 +10,7 @@
 #include "../../Data/PPortSaveGame.h"
 #include "../Manage/PManageEntryWidget.h"
 #include "UObject/ConstructorHelpers.h"
+#include "../../ProjectPortGameModeBase.h"
 
 UPManageHUDWidget::UPManageHUDWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -29,6 +30,8 @@ void UPManageHUDWidget::NativeConstruct()
 
 	if (CommonButtonConfirm)
 		CommonButtonConfirm->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageHUDWidget::OnButtonConfirmClicked);
+	if (CommonButtonEmploy)
+		CommonButtonEmploy->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageHUDWidget::OnButtonEmployClicked);
 }
 
 void UPManageHUDWidget::NativeDestruct()
@@ -37,6 +40,8 @@ void UPManageHUDWidget::NativeDestruct()
 
 	if (CommonButtonConfirm)
 		CommonButtonConfirm->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPManageHUDWidget::OnButtonConfirmClicked);
+	if (CommonButtonEmploy)
+		CommonButtonEmploy->GetButtonBG()->OnClicked.RemoveAll(this);
 }
 
 void UPManageHUDWidget::OnOpen()
@@ -93,4 +98,9 @@ void UPManageHUDWidget::OnButtonConfirmClicked()
 
 		UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, TEXT("Default"), 0, OnSaved);
 	}
+}
+
+void UPManageHUDWidget::OnButtonEmployClicked()
+{
+	GetPortGameMode()->OpenPopupWidget(TEXT("WBP_ManageEmployPopup"));
 }

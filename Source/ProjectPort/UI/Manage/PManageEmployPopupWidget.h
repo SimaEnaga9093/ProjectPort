@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 
 #include "../Module/PPopupWidget.h"
+#include "../../Data/PContentCharacterInfo.h"
 
 #include "PManageEmployPopupWidget.generated.h"
 
-class UEditableTextBox;
+class UEditableText;
 class UButton;
+class UTextBlock;
 class UPCommonButton;
 
 /**
@@ -20,7 +22,11 @@ class PROJECTPORT_API UPManageEmployPopupWidget : public UPPopupWidget
 {
 	GENERATED_BODY()
 
+public:
+	virtual void OnOpen() override;
+
 protected:
+	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
@@ -48,8 +54,17 @@ protected:
 	UFUNCTION()
 	void OnCommonButtonEmployClicked();
 
+	UFUNCTION()
+	void UpdateJobButtonState();
+
+	UFUNCTION()
+	void UpdateStatTotal(EContentCharacterStat ChangedStat, const FText& NewText);
+
+	UFUNCTION()
+	void UpdateRemainPoint();
+
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UEditableTextBox> EditableTextName;
+	TSoftObjectPtr<UEditableText> EditableTextName;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UButton> ButtonJobTanker;
@@ -61,14 +76,36 @@ protected:
 	TSoftObjectPtr<UButton> ButtonJobHealer;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UEditableTextBox> EditableTextSTR;
+	TSoftObjectPtr<UEditableText> EditableTextSTR;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UEditableTextBox> EditableTextDEX;
+	TSoftObjectPtr<UEditableText> EditableTextDEX;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UEditableTextBox> EditableTextINT;
+	TSoftObjectPtr<UEditableText> EditableTextINT;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UEditableTextBox> EditableTextMND;
+	TSoftObjectPtr<UEditableText> EditableTextMND;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UTextBlock> TextRemainPoint;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonButton> CommonButtonEmploy;
+
+	UPROPERTY()
+	TMap<EContentCharacterJob, TSoftObjectPtr<UButton>> ButtonJobs;
+
+	UPROPERTY()
+	TMap<EContentCharacterStat, TSoftObjectPtr<UEditableText>> EditableTextStats;
+
+	UPROPERTY()
+	FText InputtedName;
+
+	UPROPERTY()
+	EContentCharacterJob SelectedJobType;
+
+	UPROPERTY()
+	TMap<EContentCharacterStat, int> InputtedStats;
+
+	const int TotalPoint = 50;
+	const int MaxStatPoint = 20;
+
+	int RemainPoint;
 };

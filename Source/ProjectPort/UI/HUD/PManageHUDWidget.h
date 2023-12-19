@@ -37,12 +37,17 @@ protected:
 
 	UFUNCTION()
 	void OnButtonConfirmClicked();
+	UFUNCTION()
+	void OnButtonEmployClicked();
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTileView> TileViewEntries;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonButton> CommonButtonConfirm;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonEmploy;
 
 	UDataTable* DataTable;
 };
