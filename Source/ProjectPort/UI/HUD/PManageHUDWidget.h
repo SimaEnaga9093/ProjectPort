@@ -36,10 +36,10 @@ protected:
 	void OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData);
 
 	UFUNCTION()
+	void OnButtonResetClicked();
+	UFUNCTION()
 	void OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess);
 
-	UFUNCTION()
-	void OnButtonConfirmClicked();
 	UFUNCTION()
 	void OnButtonEmployClicked();
 	UFUNCTION()
@@ -49,7 +49,7 @@ protected:
 	TSoftObjectPtr<UTileView> TileViewEntries;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UPCommonButton> CommonButtonConfirm;
+	TSoftObjectPtr<UPCommonButton> CommonButtonReset;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPCommonButton> CommonButtonEmploy;

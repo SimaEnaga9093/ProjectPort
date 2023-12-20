@@ -29,8 +29,8 @@ void UPManageHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (CommonButtonConfirm)
-		CommonButtonConfirm->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageHUDWidget::OnButtonConfirmClicked);
+	if (CommonButtonReset)
+		CommonButtonReset->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageHUDWidget::OnButtonResetClicked);
 	if (CommonButtonEmploy)
 		CommonButtonEmploy->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageHUDWidget::OnButtonEmployClicked);
 }
@@ -39,8 +39,8 @@ void UPManageHUDWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
 
-	if (CommonButtonConfirm)
-		CommonButtonConfirm->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPManageHUDWidget::OnButtonConfirmClicked);
+	if (CommonButtonReset)
+		CommonButtonReset->GetButtonBG()->OnClicked.RemoveAll(this);
 	if (CommonButtonEmploy)
 		CommonButtonEmploy->GetButtonBG()->OnClicked.RemoveAll(this);
 }
@@ -73,12 +73,7 @@ void UPManageHUDWidget::OnSaveGameLoaded(const FString& SlotName, const int32 Us
 	}
 }
 
-void UPManageHUDWidget::OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
-{
-	// TODO
-}
-
-void UPManageHUDWidget::OnButtonConfirmClicked()
+void UPManageHUDWidget::OnButtonResetClicked()
 {
 	if (UPPortSaveGame* SaveGameInstance = Cast<UPPortSaveGame>(UGameplayStatics::CreateSaveGameObject(UPPortSaveGame::StaticClass())))
 	{
@@ -86,8 +81,6 @@ void UPManageHUDWidget::OnButtonConfirmClicked()
 		OnSaved.BindUObject(this, &UPManageHUDWidget::OnSaveGameSaved);
 
 		TArray<FPContentCharacterInfo> SaveGameDatas;
-
-		// TODO
 		if (DataTable)
 		{
 			TArray<FName> Datas = DataTable->GetRowNames();
@@ -99,11 +92,18 @@ void UPManageHUDWidget::OnButtonConfirmClicked()
 				SaveGameDatas.Add(Data);
 			}
 		}
-
 		SaveGameInstance->Characters = SaveGameDatas;
 
 		UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, TEXT("Default"), 0, OnSaved);
 	}
+}
+
+void UPManageHUDWidget::OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
+{
+	if (bSuccess)
+		GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Reset Success!")));
+
+	InitPopupWidget();
 }
 
 void UPManageHUDWidget::OnButtonEmployClicked()
