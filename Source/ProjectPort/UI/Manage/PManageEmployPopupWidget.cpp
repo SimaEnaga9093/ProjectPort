@@ -179,7 +179,6 @@ void UPManageEmployPopupWidget::OnSaveGameLoaded(const FString& SlotName, const 
 		FPContentCharacterInfo NewCharacter;
 		NewCharacter.Name = InputtedName.ToString();
 		NewCharacter.Job = SelectedJobType;
-		//NewCharacter.IconImage = 
 		NewCharacter.Stats = InputtedStats;
 
 		SavedGame->Characters.Add(NewCharacter);
@@ -198,7 +197,7 @@ void UPManageEmployPopupWidget::OnSaveGameSaved(const FString& SlotName, const i
 
 void UPManageEmployPopupWidget::UpdateJobButtonState()
 {
-	for (int i = 0; i < ButtonJobs.Num(); i++)
+	for (int i = 1; i <= ButtonJobs.Num(); i++)
 	{
 		EContentCharacterJob TargetJob = (EContentCharacterJob)i;
 		ButtonJobs[TargetJob]->SetRenderOpacity(TargetJob == SelectedJobType ? 1.0f : 0.25f);

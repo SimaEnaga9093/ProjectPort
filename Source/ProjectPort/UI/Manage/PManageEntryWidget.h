@@ -46,7 +46,7 @@ protected:
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSoftObjectPtr<UTexture2D> IconImage;
+	TMap<EContentCharacterJob, TSoftObjectPtr<UTexture2D>> IconJobImages;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText NameText;

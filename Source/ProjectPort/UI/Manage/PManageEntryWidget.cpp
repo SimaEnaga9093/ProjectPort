@@ -14,7 +14,7 @@ void UPManageEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 	UPManageEntryData* Obj = Cast<UPManageEntryData>(ListItemObject);
 	EntryData = Obj->EntryData;
 
-	ImageIcon->SetBrushFromTexture(EntryData.IconImage.LoadSynchronous());
+	ImageIcon->SetBrushFromTexture(IconJobImages[EntryData.Job].LoadSynchronous());
 	TextName->SetText(FText::FromString(EntryData.Name));
 }
 

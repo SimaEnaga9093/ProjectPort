@@ -10,10 +10,11 @@
 UENUM(BlueprintType)
 enum class EContentCharacterJob : uint8
 {
-	E_Tanker = 0 UMETA(DisplayName = "Tanker"),
-	E_Melee = 1 UMETA(DisplayName = "Melee"),
-	E_Range = 2 UMETA(DisplayName = "Range"),
-	E_Healer = 3 UMETA(DisplayName = "Healer"),
+	E_None = 0 UMETA(DisplayName = "None"),
+	E_Tanker = 1 UMETA(DisplayName = "Tanker"),
+	E_Melee = 2 UMETA(DisplayName = "Melee"),
+	E_Range = 3 UMETA(DisplayName = "Range"),
+	E_Healer = 4 UMETA(DisplayName = "Healer"),
 };
 
 UENUM(BlueprintType)
@@ -36,9 +37,6 @@ struct PROJECTPORT_API FPContentCharacterInfo : public FTableRowBase
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FString Name;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSoftObjectPtr<UTexture2D> IconImage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EContentCharacterJob Job;
