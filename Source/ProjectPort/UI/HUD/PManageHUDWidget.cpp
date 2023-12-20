@@ -20,9 +20,7 @@ UPManageHUDWidget::UPManageHUDWidget(const FObjectInitializer& ObjectInitializer
 
 	static ConstructorHelpers::FObjectFinder<UDataTable> DataObject(TEXT("/Game/Data/DT_ContentCharacterInfo"));
 	if (DataObject.Succeeded())
-	{
 		DataTable = DataObject.Object;
-	}
 }
 
 void UPManageHUDWidget::NativeConstruct()

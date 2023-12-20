@@ -5,5 +5,4 @@
 
 UPPortSaveGame::UPPortSaveGame()
 {
-
 }

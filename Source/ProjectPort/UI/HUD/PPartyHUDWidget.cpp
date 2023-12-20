@@ -8,11 +8,9 @@ UPPartyHUDWidget::UPPartyHUDWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	HUDNameText = FText::FromString("Party");
-
 }
 
 void UPPartyHUDWidget::OnOpen()
 {
 	Super::OnOpen();
-
 }

@@ -55,9 +55,6 @@ void UPQuestHUDWidget::OnOpen()
 
 void UPQuestHUDWidget::OnCommonButtonBattleClicked()
 {
-	//UPCommonPopupWidget* Popup = Cast<UPCommonPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_CommonPopup")));
-	//Popup->InitCommonPopup(FText::FromString("NOTICE"), FText::FromString("Not Developed Yet"), false);
-
 	TabIndex = EQuestHUDTabIndex::E_Battle;
 	UpdateTabIndex();
 }
@@ -71,11 +68,7 @@ void UPQuestHUDWidget::OnCommonButtonAdventureClicked()
 void UPQuestHUDWidget::OnCommonButtonCraftClicked()
 {
 	TabIndex = EQuestHUDTabIndex::E_Craft;
-	//UpdateTabIndex();
-
-	GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Not Development Yet")));
-	GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Quest Mode Will Released")));
-	GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("To be Continued...")));
+	UpdateTabIndex();
 }
 
 void UPQuestHUDWidget::UpdateTabIndex()
