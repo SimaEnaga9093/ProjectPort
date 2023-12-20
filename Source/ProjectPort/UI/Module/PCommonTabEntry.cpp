@@ -20,7 +20,7 @@ void UPCommonTabEntry::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (CommonButton)
-		CommonButton->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPCommonTabEntry::OnButtonClicked);
+		CommonButton->GetButtonBG()->OnClicked.RemoveAll(this);
 }
 
 void UPCommonTabEntry::OnButtonClicked()

@@ -38,11 +38,11 @@ void UPQuestHUDWidget::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (CommonButtonBattle)
-		CommonButtonBattle->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPQuestHUDWidget::OnCommonButtonBattleClicked);
+		CommonButtonBattle->GetButtonBG()->OnClicked.RemoveAll(this);
 	if (CommonButtonAdventure)
-		CommonButtonAdventure->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPQuestHUDWidget::OnCommonButtonAdventureClicked);
+		CommonButtonAdventure->GetButtonBG()->OnClicked.RemoveAll(this);
 	if (CommonButtonCraft)
-		CommonButtonCraft->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPQuestHUDWidget::OnCommonButtonCraftClicked);
+		CommonButtonCraft->GetButtonBG()->OnClicked.RemoveAll(this);
 }
 
 void UPQuestHUDWidget::OnOpen()

@@ -38,7 +38,6 @@ public:
 	void OnListViewClicked(UObject* Item);
 
 protected:
-	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 

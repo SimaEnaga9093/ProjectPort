@@ -20,7 +20,7 @@ void UPTopBarWidget::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (ButtonBack)
-		ButtonBack->OnClicked.RemoveDynamic(this, &UPTopBarWidget::OnButtonBackClicked);
+		ButtonBack->OnClicked.RemoveAll(this);
 }
 
 void UPTopBarWidget::OnButtonBackClicked()

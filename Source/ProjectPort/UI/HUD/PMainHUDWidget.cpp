@@ -32,13 +32,13 @@ void UPMainHUDWidget::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (CommonButtonQuest)
-		CommonButtonQuest->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPMainHUDWidget::OnButtonQuestClicked);
+		CommonButtonQuest->GetButtonBG()->OnClicked.RemoveAll(this);
 
 	if (CommonButtonParty)
-		CommonButtonParty->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPMainHUDWidget::OnButtonPartyClicked);
+		CommonButtonParty->GetButtonBG()->OnClicked.RemoveAll(this);
 
 	if (CommonButtonManage)
-		CommonButtonManage->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPMainHUDWidget::OnButtonManageClicked);
+		CommonButtonManage->GetButtonBG()->OnClicked.RemoveAll(this);
 }
 
 void UPMainHUDWidget::OnButtonQuestClicked()

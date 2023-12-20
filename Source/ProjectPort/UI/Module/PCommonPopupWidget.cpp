@@ -34,7 +34,7 @@ void UPCommonPopupWidget::NativeDestruct()
 		CommonButtonConfirm->GetButtonBG()->OnClicked.RemoveDynamic(this, &UPPopupWidget::ClosePopup);
 
 	if (ButtonBG)
-		ButtonBG->OnClicked.RemoveDynamic(this, &UPPopupWidget::ClosePopup);
+		ButtonBG->OnClicked.RemoveAll(this);
 }
 
 void UPCommonPopupWidget::UpdatePopup()

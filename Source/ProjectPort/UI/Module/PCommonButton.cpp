@@ -41,9 +41,7 @@ void UPCommonButton::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (ButtonBG)
-	{
-		ButtonBG->OnClicked.RemoveDynamic(this, &UPCommonButton::OnButtonBGClicked);
-	}
+		ButtonBG->OnClicked.RemoveAll(this);
 }
 
 void UPCommonButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)

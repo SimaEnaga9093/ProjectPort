@@ -27,7 +27,7 @@ void UPToastMessageWidget::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (ButtonBG)
-		ButtonBG->OnClicked.RemoveDynamic(this, &UPToastMessageWidget::OnButtonBGClicked);
+		ButtonBG->OnClicked.RemoveAll(this);
 }
 
 void UPToastMessageWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)

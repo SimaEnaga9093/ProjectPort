@@ -31,11 +31,6 @@ UPQuestBattleWidget::UPQuestBattleWidget(const FObjectInitializer& ObjectInitial
 	}
 }
 
-void UPQuestBattleWidget::NativePreConstruct()
-{
-	Super::NativePreConstruct();
-}
-
 void UPQuestBattleWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -55,7 +50,7 @@ void UPQuestBattleWidget::NativeDestruct()
 	Super::NativeDestruct();
 
 	if (CommonTab)
-		CommonTab->OnClicked.RemoveDynamic(this, &UPQuestBattleWidget::OnTabClicked);
+		CommonTab->OnClicked.RemoveAll(this);
 
 	if (ListViewEntries)
 		ListViewEntries->OnItemClicked().Clear();
