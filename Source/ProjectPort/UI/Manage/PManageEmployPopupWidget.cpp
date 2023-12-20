@@ -17,9 +17,7 @@ void UPManageEmployPopupWidget::OnOpen()
 {
 	SelectedJobType = EContentCharacterJob::E_Tanker;
 	UpdateJobButtonState();
-	
-	//for (int i = 0; i < EditableTextStats.Num(); i++)
-		//EditableTextStats[(EContentCharacterStat)i]->SetText(FText::AsNumber(0));
+
 	UpdateRemainPoint();
 }
 
@@ -164,19 +162,38 @@ void UPManageEmployPopupWidget::OnCommonButtonEmployClicked()
 		GetPortGameMode()->OpenToastMessageWidget(FailedReasonText);
 		return;
 	}
-/*
-	if (UPPortSaveGame* SaveGameInstance = Cast<UPPortSaveGame>(UGameplayStatics::CreateSaveGameObject(UPPortSaveGame::StaticClass())))
+
+	FAsyncLoadGameFromSlotDelegate OnLoaded;
+	OnLoaded.BindUObject(this, &UPManageEmployPopupWidget::OnSaveGameLoaded);
+	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
+}
+
+void UPManageEmployPopupWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
+{
+	UPPortSaveGame* SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
+	if (SavedGame)
 	{
 		FAsyncSaveGameToSlotDelegate OnSaved;
-		OnSaved.BindUObject(this, &UPManageHUDWidget::OnSaveGameSaved);
+		OnSaved.BindUObject(this, &UPManageEmployPopupWidget::OnSaveGameSaved);
 
-		TArray<FPContentCharacterInfo> SaveGameDatas;
-		SaveGameInstance->Characters = SaveGameDatas;
+		FPContentCharacterInfo NewCharacter;
+		NewCharacter.Name = InputtedName.ToString();
+		NewCharacter.Job = SelectedJobType;
+		//NewCharacter.IconImage = 
+		NewCharacter.Stats = InputtedStats;
 
-		UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, TEXT("Default"), 0, OnSaved);
+		SavedGame->Characters.Add(NewCharacter);
+
+		UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
 	}
-*/
+}
+
+void UPManageEmployPopupWidget::OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
+{
 	ClosePopup();
+
+	if (bSuccess)
+		GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Employ Success!")));
 }
 
 void UPManageEmployPopupWidget::UpdateJobButtonState()

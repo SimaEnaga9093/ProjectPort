@@ -30,6 +30,9 @@ protected:
 	virtual void OnOpen() override;
 
 	UFUNCTION()
+	void InitPopupWidget();
+
+	UFUNCTION()
 	void OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData);
 
 	UFUNCTION()
@@ -39,6 +42,8 @@ protected:
 	void OnButtonConfirmClicked();
 	UFUNCTION()
 	void OnButtonEmployClicked();
+	UFUNCTION()
+	void OnEmployPopupClosed();
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTileView> TileViewEntries;

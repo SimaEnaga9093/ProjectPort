@@ -40,6 +40,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSoftObjectPtr<UTexture2D> IconImage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EContentCharacterJob Job;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<EContentCharacterStat, int> Stats = {
+		{ EContentCharacterStat::E_STR, 0 },
+		{ EContentCharacterStat::E_DEX, 0 },
+		{ EContentCharacterStat::E_INT, 0 },
+		{ EContentCharacterStat::E_MND, 0 },
+	};
 };

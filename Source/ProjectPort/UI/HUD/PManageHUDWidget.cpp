@@ -11,6 +11,7 @@
 #include "../Manage/PManageEntryWidget.h"
 #include "UObject/ConstructorHelpers.h"
 #include "../../ProjectPortGameModeBase.h"
+#include "../Module/PPopupWidget.h"
 
 UPManageHUDWidget::UPManageHUDWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -48,6 +49,11 @@ void UPManageHUDWidget::OnOpen()
 {
 	Super::OnOpen();
 
+	InitPopupWidget();
+}
+
+void UPManageHUDWidget::InitPopupWidget()
+{
 	FAsyncLoadGameFromSlotDelegate OnLoaded;
 	OnLoaded.BindUObject(this, &UPManageHUDWidget::OnSaveGameLoaded);
 
@@ -102,5 +108,11 @@ void UPManageHUDWidget::OnButtonConfirmClicked()
 
 void UPManageHUDWidget::OnButtonEmployClicked()
 {
-	GetPortGameMode()->OpenPopupWidget(TEXT("WBP_ManageEmployPopup"));
+	UPPopupWidget* PopupWidget = GetPortGameMode()->OpenPopupWidget(TEXT("WBP_ManageEmployPopup"));
+	PopupWidget->OnPopupClosed.AddDynamic(this, &UPManageHUDWidget::OnEmployPopupClosed);
+}
+
+void UPManageHUDWidget::OnEmployPopupClosed()
+{
+	InitPopupWidget();
 }
