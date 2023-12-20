@@ -13,6 +13,9 @@ void UPPopupWidget::OnOpen()
 void UPPopupWidget::OnClose()
 {
 	UE_LOG(LogTemp, Log, TEXT("UPPopupWidget::OnClose %s"), *GetName());
+
+	if (OnPopupClosed.IsBound())
+		OnPopupClosed.Broadcast();
 }
 
 bool UPPopupWidget::HandleCloseAction()

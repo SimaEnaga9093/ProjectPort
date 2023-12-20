@@ -5,8 +5,11 @@
 #include "CoreMinimal.h"
 
 #include "PUserWidget.h"
+#include "UObject/ObjectMacros.h"
 
 #include "PPopupWidget.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPopupClosed);
 
 /**
  * Base Popup Widget
@@ -28,4 +31,7 @@ public:
 
 	UFUNCTION()
 	virtual void ClosePopup();
+
+	UPROPERTY()
+	FOnPopupClosed OnPopupClosed;
 };
