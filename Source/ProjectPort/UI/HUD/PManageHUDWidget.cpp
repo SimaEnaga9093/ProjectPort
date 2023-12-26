@@ -27,6 +27,9 @@ void UPManageHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	if (TileViewEntries)
+		TileViewEntries->OnItemClicked().AddUObject(this, &UPManageHUDWidget::OnListViewClicked);
+
 	if (CommonButtonReset)
 		CommonButtonReset->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageHUDWidget::OnButtonResetClicked);
 	if (CommonButtonEmploy)
@@ -36,6 +39,9 @@ void UPManageHUDWidget::NativeConstruct()
 void UPManageHUDWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
+
+	if (TileViewEntries)
+		TileViewEntries->OnItemClicked().Clear();
 
 	if (CommonButtonReset)
 		CommonButtonReset->GetButtonBG()->OnClicked.RemoveAll(this);
@@ -69,6 +75,11 @@ void UPManageHUDWidget::OnSaveGameLoaded(const FString& SlotName, const int32 Us
 		Item->EntryData = SaveGame->Characters[i];
 		TileViewEntries->AddItem(Item);
 	}
+}
+
+void UPManageHUDWidget::OnListViewClicked(UObject* Item)
+{
+	// TODO
 }
 
 void UPManageHUDWidget::OnButtonResetClicked()
