@@ -48,4 +48,9 @@ public:
 		{ EContentCharacterStat::E_INT, 0 },
 		{ EContentCharacterStat::E_MND, 0 },
 	};
+
+	bool operator==(const FPContentCharacterInfo& A)
+	{
+		return (A.Name == Name) && (A.Job == Job);
+	}
 };

@@ -9,6 +9,10 @@
 #include "../Module/PCommonButton.h"
 #include "../../ProjectPortGameModeBase.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "../../Data/PPortSaveGame.h"
+#include "UObject/ConstructorHelpers.h"
+
 void UPManageInfoPopupWidget::OnOpen()
 {
 
@@ -16,6 +20,8 @@ void UPManageInfoPopupWidget::OnOpen()
 
 void UPManageInfoPopupWidget::UpdateInfoPopup(FPContentCharacterInfo Info)
 {
+	CharacterInfo = Info;
+
 	TextName->SetText(FText::FromString(Info.Name));
 	JobIcon->UpdateJobType(Info.Job);
 
@@ -38,6 +44,11 @@ void UPManageInfoPopupWidget::NativeConstruct()
 
 	if (ButtonBG)
 		ButtonBG->OnClicked.AddDynamic(this, &UPManageInfoPopupWidget::OnButtonBGClicked);
+
+	if (CommonButtonRetirement)
+		CommonButtonRetirement->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageInfoPopupWidget::OnButtonRetirementClicked);
+	if (CommonButtonTrain)
+		CommonButtonTrain->GetButtonBG()->OnClicked.AddDynamic(this, &UPManageInfoPopupWidget::OnButtonTrainClicked);
 }
 
 void UPManageInfoPopupWidget::NativeDestruct()
@@ -46,9 +57,49 @@ void UPManageInfoPopupWidget::NativeDestruct()
 
 	if (ButtonBG)
 		ButtonBG->OnClicked.RemoveAll(this);
+
+	if (CommonButtonRetirement)
+		CommonButtonRetirement->GetButtonBG()->OnClicked.RemoveAll(this);
+	if (CommonButtonTrain)
+		CommonButtonTrain->GetButtonBG()->OnClicked.RemoveAll(this);
 }
 
 void UPManageInfoPopupWidget::OnButtonBGClicked()
 {
 	ClosePopup();
+}
+
+void UPManageInfoPopupWidget::OnButtonRetirementClicked()
+{
+	// TODO Noty
+
+	FAsyncLoadGameFromSlotDelegate OnLoaded;
+	OnLoaded.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameLoaded);
+	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
+}
+
+void UPManageInfoPopupWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
+{
+	UPPortSaveGame* SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
+	if (SavedGame)
+	{
+		FAsyncSaveGameToSlotDelegate OnSaved;
+		OnSaved.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameSaved);
+
+		SavedGame->Characters.Remove(CharacterInfo);
+
+		UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
+	}
+}
+
+void UPManageInfoPopupWidget::OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
+{
+	ClosePopup();
+
+	if (bSuccess)
+		GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Retirement Success...")));
+}
+
+void UPManageInfoPopupWidget::OnButtonTrainClicked()
+{
 }

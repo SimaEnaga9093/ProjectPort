@@ -34,6 +34,16 @@ protected:
 	UFUNCTION()
 	void OnButtonBGClicked();
 
+	UFUNCTION()
+	void OnButtonRetirementClicked();
+	UFUNCTION()
+	void OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData);
+	UFUNCTION()
+	void OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess);
+
+	UFUNCTION()
+	void OnButtonTrainClicked();
+
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UButton> ButtonBG;
 
@@ -52,6 +62,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextMND;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonRetirement;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPCommonButton> CommonButtonTrain;
+
 	UPROPERTY()
 	TMap<EContentCharacterStat, TSoftObjectPtr<UTextBlock>> TextStats;
+
+	UPROPERTY()
+	FPContentCharacterInfo CharacterInfo;
 };
