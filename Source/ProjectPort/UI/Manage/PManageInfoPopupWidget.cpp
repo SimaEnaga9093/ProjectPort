@@ -8,7 +8,7 @@
 #include "Components/Button.h"
 #include "../Module/PCommonButton.h"
 #include "../../ProjectPortGameModeBase.h"
-
+#include "../Module/PCommonPopupWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "../../Data/PPortSaveGame.h"
 #include "UObject/ConstructorHelpers.h"
@@ -71,8 +71,13 @@ void UPManageInfoPopupWidget::OnButtonBGClicked()
 
 void UPManageInfoPopupWidget::OnButtonRetirementClicked()
 {
-	// TODO Noty
+	UPCommonPopupWidget* PopupWidget = Cast<UPCommonPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_CommonPopup")));
+	PopupWidget->InitCommonPopup(FText::FromString(TEXT("Alert")), FText::FromString(TEXT("Are you sure to Retire character and Remove from list?")), true);
+	PopupWidget->GetCommonButtonConfirm()->OnClicked.AddDynamic(this, &UPManageInfoPopupWidget::OnRetirementPopupConfirmClicked);
+}
 
+void UPManageInfoPopupWidget::OnRetirementPopupConfirmClicked()
+{
 	FAsyncLoadGameFromSlotDelegate OnLoaded;
 	OnLoaded.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameLoaded);
 	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);

@@ -37,6 +37,8 @@ protected:
 	UFUNCTION()
 	void OnButtonRetirementClicked();
 	UFUNCTION()
+	void OnRetirementPopupConfirmClicked();
+	UFUNCTION()
 	void OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData);
 	UFUNCTION()
 	void OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess);
