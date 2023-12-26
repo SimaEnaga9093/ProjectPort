@@ -10,7 +10,7 @@
 
 #include "PManageEntryWidget.generated.h"
 
-class UImage;
+class UPJobIcon;
 class UTextBlock;
 
 UCLASS()
@@ -37,7 +37,7 @@ protected:
 	virtual void NativeOnItemSelectionChanged(bool bIsSelected) override;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TSoftObjectPtr<UImage> ImageIcon;
+	TSoftObjectPtr<UPJobIcon> JobIcon;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextName;

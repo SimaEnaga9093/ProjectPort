@@ -4,7 +4,7 @@
 #include "PManageEntryWidget.h"
 
 #include "../../Data/PContentCharacterInfo.h"
-#include "Components/Image.h"
+#include "../Module/PJobIcon.h"
 #include "Components/TextBlock.h"
 
 void UPManageEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
@@ -14,7 +14,7 @@ void UPManageEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 	UPManageEntryData* Obj = Cast<UPManageEntryData>(ListItemObject);
 	EntryData = Obj->EntryData;
 
-	ImageIcon->SetBrushFromTexture(IconJobImages[EntryData.Job].LoadSynchronous());
+	JobIcon->UpdateJobType(EntryData.Job);
 	TextName->SetText(FText::FromString(EntryData.Name));
 }
 

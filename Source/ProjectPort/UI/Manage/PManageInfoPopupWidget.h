@@ -10,6 +10,7 @@
 #include "PManageInfoPopupWidget.generated.h"
 
 class UButton;
+class UPJobIcon;
 class UTextBlock;
 class UPCommonButton;
 
@@ -37,6 +38,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextName;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TSoftObjectPtr<UPJobIcon> JobIcon;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextSTR;

@@ -30,10 +30,13 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UImage> ImageIcon;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TMap<EContentCharacterJob, TSoftObjectPtr<UTexture2D>> IconJobImages;
 
 public:
+	UFUNCTION()
+	void UpdateJobType(EContentCharacterJob NewJob);
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector2D WidthHeightOverride;
 

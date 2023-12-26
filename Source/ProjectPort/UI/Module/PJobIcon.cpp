@@ -13,5 +13,12 @@ void UPJobIcon::NativePreConstruct()
 	SizeBoxBG->SetWidthOverride(WidthHeightOverride.X);
 	SizeBoxBG->SetHeightOverride(WidthHeightOverride.Y);
 
+	UpdateJobType(JobType);
+}
+
+void UPJobIcon::UpdateJobType(EContentCharacterJob NewJob)
+{
+	JobType = NewJob;
+
 	ImageIcon->SetBrushFromTexture(IconJobImages[JobType].LoadSynchronous());
 }
