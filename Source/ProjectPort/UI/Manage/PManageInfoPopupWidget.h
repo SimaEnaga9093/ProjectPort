@@ -24,6 +24,7 @@ class PROJECTPORT_API UPManageInfoPopupWidget : public UPPopupWidget
 
 public:
 	virtual void OnOpen() override;
+	void UpdateInfoPopup(FPContentCharacterInfo Info);
 
 protected:
 	virtual void NativePreConstruct() override;
@@ -51,4 +52,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UTextBlock> TextMND;
 
+	UPROPERTY()
+	TMap<EContentCharacterStat, TSoftObjectPtr<UTextBlock>> TextStats;
 };

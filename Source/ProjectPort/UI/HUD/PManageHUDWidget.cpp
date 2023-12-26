@@ -12,6 +12,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "../../ProjectPortGameModeBase.h"
 #include "../Module/PPopupWidget.h"
+#include "../Manage/PManageInfoPopupWidget.h"
 
 UPManageHUDWidget::UPManageHUDWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -79,7 +80,10 @@ void UPManageHUDWidget::OnSaveGameLoaded(const FString& SlotName, const int32 Us
 
 void UPManageHUDWidget::OnListViewClicked(UObject* Item)
 {
-	// TODO
+	UPManageEntryData* Obj = Cast<UPManageEntryData>(Item);
+
+	UPManageInfoPopupWidget* PopupWidget = Cast<UPManageInfoPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_ManageInfoPopup")));
+	PopupWidget->UpdateInfoPopup(Obj->EntryData);
 }
 
 void UPManageHUDWidget::OnButtonResetClicked()
