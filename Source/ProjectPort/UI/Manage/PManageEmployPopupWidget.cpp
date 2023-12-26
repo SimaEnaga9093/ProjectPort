@@ -181,6 +181,12 @@ void UPManageEmployPopupWidget::OnSaveGameLoaded(const FString& SlotName, const 
 		NewCharacter.Job = SelectedJobType;
 		NewCharacter.Stats = InputtedStats;
 
+		if (SavedGame->Characters.Contains(NewCharacter))
+		{
+			GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Alreay has character name and job!")));
+			return;
+		}
+
 		SavedGame->Characters.Add(NewCharacter);
 
 		UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);

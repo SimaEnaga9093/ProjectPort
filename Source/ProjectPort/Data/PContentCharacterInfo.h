@@ -49,7 +49,7 @@ public:
 		{ EContentCharacterStat::E_MND, 0 },
 	};
 
-	bool operator==(const FPContentCharacterInfo& A)
+	bool operator==(const FPContentCharacterInfo& A) const
 	{
 		return (A.Name == Name) && (A.Job == Job);
 	}
