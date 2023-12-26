@@ -17,8 +17,3 @@ void UPManageEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 	JobIcon->UpdateJobType(EntryData.Job);
 	TextName->SetText(FText::FromString(EntryData.Name));
 }
-
-void UPManageEntryWidget::NativeOnItemSelectionChanged(bool bIsSelected)
-{
-	//TODO
-}

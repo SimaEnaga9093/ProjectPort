@@ -34,7 +34,6 @@ class PROJECTPORT_API UPManageEntryWidget : public UPUserWidget, public IUserObj
 
 protected:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
-	virtual void NativeOnItemSelectionChanged(bool bIsSelected) override;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TSoftObjectPtr<UPJobIcon> JobIcon;
