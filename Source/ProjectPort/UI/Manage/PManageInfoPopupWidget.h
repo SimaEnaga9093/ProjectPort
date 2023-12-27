@@ -14,6 +14,8 @@ class UPJobIcon;
 class UTextBlock;
 class UPCommonButton;
 
+class UPPortSaveGame;
+
 /**
  * Manage - Info Popup Widget
  */
@@ -24,12 +26,17 @@ class PROJECTPORT_API UPManageInfoPopupWidget : public UPPopupWidget
 
 public:
 	virtual void OnOpen() override;
-	void UpdateInfoPopup(FPContentCharacterInfo Info);
+	void UpdateCharacterInfo(FPContentCharacterInfo Info);
 
 protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+
+	UFUNCTION()
+	void RefreshWidget();
+	UFUNCTION()
+	void OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData);
 
 	UFUNCTION()
 	void OnButtonBGClicked();
@@ -39,9 +46,7 @@ protected:
 	UFUNCTION()
 	void OnRetirementPopupConfirmClicked();
 	UFUNCTION()
-	void OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData);
-	UFUNCTION()
-	void OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess);
+	void OnSaveGameRetirementSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess);
 
 	UFUNCTION()
 	void OnButtonTrainClicked();
@@ -76,4 +81,8 @@ protected:
 
 	UPROPERTY()
 	FPContentCharacterInfo CharacterInfo;
+
+private:
+	UPROPERTY()
+	UPPortSaveGame* SavedGame;
 };

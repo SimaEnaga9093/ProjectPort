@@ -15,20 +15,16 @@
 
 void UPManageInfoPopupWidget::OnOpen()
 {
-
+	FAsyncLoadGameFromSlotDelegate OnLoaded;
+	OnLoaded.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameLoaded);
+	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
 }
 
-void UPManageInfoPopupWidget::UpdateInfoPopup(FPContentCharacterInfo Info)
+void UPManageInfoPopupWidget::UpdateCharacterInfo(FPContentCharacterInfo Info)
 {
 	CharacterInfo = Info;
 
-	TextName->SetText(FText::FromString(Info.Name));
-	FText CommonLevelText = NSLOCTEXT("Common", "Level", "LV.{0}");
-	TextLevel->SetText(FText::Format(CommonLevelText, Info.Level));
-	JobIcon->UpdateJobType(Info.Job);
-
-	for (int i = 0; i < TextStats.Num(); i++)
-		TextStats[(EContentCharacterStat)i]->SetText(FText::AsNumber(Info.Stats[(EContentCharacterStat)i]));
+	RefreshWidget();
 }
 
 void UPManageInfoPopupWidget::NativePreConstruct()
@@ -66,6 +62,22 @@ void UPManageInfoPopupWidget::NativeDestruct()
 		CommonButtonTrain->GetButtonBG()->OnClicked.RemoveAll(this);
 }
 
+void UPManageInfoPopupWidget::RefreshWidget()
+{
+	TextName->SetText(FText::FromString(CharacterInfo.Name));
+	FText CommonLevelText = NSLOCTEXT("Common", "Level", "LV.{0}");
+	TextLevel->SetText(FText::Format(CommonLevelText, CharacterInfo.Level));
+	JobIcon->UpdateJobType(CharacterInfo.Job);
+
+	for (int i = 0; i < TextStats.Num(); i++)
+		TextStats[(EContentCharacterStat)i]->SetText(FText::AsNumber(CharacterInfo.Stats[(EContentCharacterStat)i]));
+}
+
+void UPManageInfoPopupWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
+{
+	SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
+}
+
 void UPManageInfoPopupWidget::OnButtonBGClicked()
 {
 	ClosePopup();
@@ -80,26 +92,14 @@ void UPManageInfoPopupWidget::OnButtonRetirementClicked()
 
 void UPManageInfoPopupWidget::OnRetirementPopupConfirmClicked()
 {
-	FAsyncLoadGameFromSlotDelegate OnLoaded;
-	OnLoaded.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameLoaded);
-	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
+	SavedGame->Characters.Remove(CharacterInfo);
+
+	FAsyncSaveGameToSlotDelegate OnSaved;
+	OnSaved.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameRetirementSaved);
+	UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
 }
 
-void UPManageInfoPopupWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
-{
-	UPPortSaveGame* SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
-	if (SavedGame)
-	{
-		FAsyncSaveGameToSlotDelegate OnSaved;
-		OnSaved.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameSaved);
-
-		SavedGame->Characters.Remove(CharacterInfo);
-
-		UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
-	}
-}
-
-void UPManageInfoPopupWidget::OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
+void UPManageInfoPopupWidget::OnSaveGameRetirementSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
 {
 	ClosePopup();
 
@@ -109,4 +109,27 @@ void UPManageInfoPopupWidget::OnSaveGameSaved(const FString& SlotName, const int
 
 void UPManageInfoPopupWidget::OnButtonTrainClicked()
 {
+	int32 Index = SavedGame->Characters.Find(CharacterInfo);
+
+	CharacterInfo.Level += 1;
+
+	// Example
+	EContentCharacterStat TargetStat = (EContentCharacterStat)FMath::RandRange(0, 3);
+	int IncreasedValue = FMath::RandRange(1, 3);
+	CharacterInfo.Stats[TargetStat] += IncreasedValue;
+
+	SavedGame->Characters[Index] = CharacterInfo;
+
+	FAsyncSaveGameToSlotDelegate OnSaved;
+	OnSaved.BindLambda([&, IncreasedValue] (const FString& SlotName, const int32 UserIndex, bool bSuccess) {
+		RefreshWidget();
+
+		if (bSuccess)
+		{
+			FText ManageInfoTrainSuccessText = NSLOCTEXT("ManageInfo", "TrainSuccess", "Train Success! +{0}");
+			GetPortGameMode()->OpenToastMessageWidget(FText::Format(ManageInfoTrainSuccessText, IncreasedValue));
+		}
+	});
+
+	UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
 }

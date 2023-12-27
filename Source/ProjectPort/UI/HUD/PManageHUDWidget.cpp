@@ -83,7 +83,7 @@ void UPManageHUDWidget::OnListViewClicked(UObject* Item)
 	UPManageEntryData* Obj = Cast<UPManageEntryData>(Item);
 
 	UPManageInfoPopupWidget* PopupWidget = Cast<UPManageInfoPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_ManageInfoPopup")));
-	PopupWidget->UpdateInfoPopup(Obj->EntryData);
+	PopupWidget->UpdateCharacterInfo(Obj->EntryData);
 	PopupWidget->OnPopupClosed.AddDynamic(this, &UPManageHUDWidget::InitPopupWidget);
 }
 
