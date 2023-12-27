@@ -42,6 +42,9 @@ public:
 	EContentCharacterJob Job;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<EContentCharacterStat, int> Stats = {
 		{ EContentCharacterStat::E_STR, 0 },
 		{ EContentCharacterStat::E_DEX, 0 },

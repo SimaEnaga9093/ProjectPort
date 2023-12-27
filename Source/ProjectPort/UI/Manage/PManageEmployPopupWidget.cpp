@@ -180,6 +180,7 @@ void UPManageEmployPopupWidget::OnSaveGameLoaded(const FString& SlotName, const 
 		NewCharacter.Name = InputtedName.ToString();
 		NewCharacter.Job = SelectedJobType;
 		NewCharacter.Stats = InputtedStats;
+		NewCharacter.Level = 1;
 
 		if (SavedGame->Characters.Contains(NewCharacter))
 		{

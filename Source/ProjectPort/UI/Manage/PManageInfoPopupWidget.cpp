@@ -23,6 +23,8 @@ void UPManageInfoPopupWidget::UpdateInfoPopup(FPContentCharacterInfo Info)
 	CharacterInfo = Info;
 
 	TextName->SetText(FText::FromString(Info.Name));
+	FText CommonLevelText = NSLOCTEXT("Common", "Level", "LV.{0}");
+	TextLevel->SetText(FText::Format(CommonLevelText, Info.Level));
 	JobIcon->UpdateJobType(Info.Job);
 
 	for (int i = 0; i < TextStats.Num(); i++)
