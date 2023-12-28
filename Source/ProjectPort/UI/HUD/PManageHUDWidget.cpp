@@ -13,6 +13,7 @@
 #include "../../ProjectPortGameModeBase.h"
 #include "../Module/PPopupWidget.h"
 #include "../Manage/PManageInfoPopupWidget.h"
+#include "../../Data/PLocalText.h"
 
 UPManageHUDWidget::UPManageHUDWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -91,7 +92,7 @@ void UPManageHUDWidget::OnButtonResetClicked()
 		FAsyncSaveGameToSlotDelegate OnSaved;
 		OnSaved.BindLambda([&] (const FString& SlotName, const int32 UserIndex, bool bSuccess) {
 			if (bSuccess)
-				GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Reset Success!")));
+				GetPortGameMode()->OpenToastMessageWidget(PLocalText::ManageResetSuccess);
 
 			InitPopupWidget();
 		});

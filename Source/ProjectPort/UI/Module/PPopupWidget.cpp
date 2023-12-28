@@ -7,12 +7,12 @@
 
 void UPPopupWidget::OnOpen()
 {
-	UE_LOG(LogTemp, Log, TEXT("UPPopupWidget::OnOpen %s"), *GetName());
+	//UE_LOG(LogTemp, Log, TEXT("UPPopupWidget::OnOpen %s"), *GetName());
 }
 
 void UPPopupWidget::OnClose()
 {
-	UE_LOG(LogTemp, Log, TEXT("UPPopupWidget::OnClose %s"), *GetName());
+	//UE_LOG(LogTemp, Log, TEXT("UPPopupWidget::OnClose %s"), *GetName());
 
 	if (OnPopupClosed.IsBound())
 		OnPopupClosed.Broadcast();
@@ -20,7 +20,7 @@ void UPPopupWidget::OnClose()
 
 bool UPPopupWidget::HandleCloseAction()
 {
-	UE_LOG(LogTemp, Log, TEXT("UPPopupWidget::HandleCloseAction %s"), *GetName());
+	//UE_LOG(LogTemp, Log, TEXT("UPPopupWidget::HandleCloseAction %s"), *GetName());
 	return false;
 }
 

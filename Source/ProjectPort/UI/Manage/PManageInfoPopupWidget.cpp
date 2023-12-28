@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
 #include "../Module/PCommonButton.h"
+#include "../../Data/PLocalText.h"
 #include "../../ProjectPortGameModeBase.h"
 #include "../Module/PCommonPopupWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -68,8 +69,7 @@ void UPManageInfoPopupWidget::NativeDestruct()
 void UPManageInfoPopupWidget::RefreshWidget()
 {
 	TextName->SetText(FText::FromString(CharacterInfo.Name));
-	FText CommonLevelText = NSLOCTEXT("Common", "Level", "LV.{0}");
-	TextLevel->SetText(FText::Format(CommonLevelText, CharacterInfo.Level));
+	TextLevel->SetText(FText::Format(PLocalText::CommonLevel, CharacterInfo.Level));
 	JobIcon->UpdateJobType(CharacterInfo.Job);
 
 	for (int i = 0; i < TextStats.Num(); i++)
@@ -84,7 +84,7 @@ void UPManageInfoPopupWidget::OnButtonBGClicked()
 void UPManageInfoPopupWidget::OnButtonRetirementClicked()
 {
 	UPCommonPopupWidget* PopupWidget = Cast<UPCommonPopupWidget>(GetPortGameMode()->OpenPopupWidget(TEXT("WBP_CommonPopup")));
-	PopupWidget->InitCommonPopup(FText::FromString(TEXT("Alert")), FText::FromString(TEXT("Are you sure to Retire character and Remove from list?")), true);
+	PopupWidget->InitCommonPopup(PLocalText::CommonAlert, PLocalText::ManageInfoRetireConfirm, true);
 	PopupWidget->GetCommonButtonConfirm()->OnClicked.AddDynamic(this, &UPManageInfoPopupWidget::OnRetirementPopupConfirmClicked);
 }
 
@@ -97,7 +97,7 @@ void UPManageInfoPopupWidget::OnRetirementPopupConfirmClicked()
 		ClosePopup();
 
 		if (bSuccess)
-			GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Retirement Success...")));
+			GetPortGameMode()->OpenToastMessageWidget(PLocalText::ManageInfoRetireSuccess);
 	});
 
 	UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
@@ -109,7 +109,6 @@ void UPManageInfoPopupWidget::OnButtonTrainClicked()
 
 	CharacterInfo.Level += 1;
 
-	// Example
 	EContentCharacterStat TargetStat = (EContentCharacterStat)FMath::RandRange(0, 3);
 	int IncreasedValue = FMath::RandRange(1, 3);
 	CharacterInfo.Stats[TargetStat] += IncreasedValue;
@@ -121,10 +120,7 @@ void UPManageInfoPopupWidget::OnButtonTrainClicked()
 		RefreshWidget();
 
 		if (bSuccess)
-		{
-			FText ManageInfoTrainSuccessText = NSLOCTEXT("ManageInfo", "TrainSuccess", "Train Success! +{0}");
-			GetPortGameMode()->OpenToastMessageWidget(FText::Format(ManageInfoTrainSuccessText, IncreasedValue));
-		}
+			GetPortGameMode()->OpenToastMessageWidget(FText::Format(PLocalText::ManageInfoTrainSuccess, PLocalText::CommonContentCharacterStat[(int)TargetStat], IncreasedValue));
 	});
 
 	UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);

@@ -8,10 +8,10 @@
 #include "../Module/PCommonButton.h"
 #include "Components/TextBlock.h"
 #include "../../ProjectPortGameModeBase.h"
-
 #include "Kismet/GameplayStatics.h"
 #include "../../Data/PPortSaveGame.h"
 #include "UObject/ConstructorHelpers.h"
+#include "../../Data/PLocalText.h"
 
 void UPManageEmployPopupWidget::OnOpen()
 {
@@ -153,9 +153,9 @@ void UPManageEmployPopupWidget::OnCommonButtonEmployClicked()
 {
 	FText FailedReasonText = FText();
 	if (RemainPoint > 0)
-		FailedReasonText = FText::FromString(TEXT("Need to make Remain point to 0!"));
+		FailedReasonText = PLocalText::ManageEmployNeedClearPoint;
 	if (InputtedName.IsEmpty())
-		FailedReasonText = FText::FromString(TEXT("Need to set a Name!"));
+		FailedReasonText = PLocalText::ManageEmployNoName;
 
 	if (!FailedReasonText.IsEmpty())
 	{
@@ -168,7 +168,7 @@ void UPManageEmployPopupWidget::OnCommonButtonEmployClicked()
 		ClosePopup();
 
 		if (bSuccess)
-			GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Employ Success!")));
+			GetPortGameMode()->OpenToastMessageWidget(PLocalText::ManageEmploySuccess);
 	});
 
 	FAsyncLoadGameFromSlotDelegate OnLoaded;
@@ -184,7 +184,7 @@ void UPManageEmployPopupWidget::OnCommonButtonEmployClicked()
 
 			if (SavedGame->Characters.Contains(NewCharacter))
 			{
-				GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Alreay has character name and job!")));
+				GetPortGameMode()->OpenToastMessageWidget(PLocalText::ManageEmployAlreadyEmployment);
 				return;
 			}
 
@@ -225,6 +225,5 @@ void UPManageEmployPopupWidget::UpdateRemainPoint()
 	for (int i = 0; i < InputtedStats.Num(); i++)
 		RemainPoint -= InputtedStats[(EContentCharacterStat)i];
 
-	FText ManageEmployRemainPointText = NSLOCTEXT("ManageEmploy", "RemainPoint", "Remain Point : {0}");
-	TextRemainPoint->SetText(FText::Format(ManageEmployRemainPointText, RemainPoint));
+	TextRemainPoint->SetText(FText::Format(PLocalText::ManageEmployRemainPoint, RemainPoint));
 }
