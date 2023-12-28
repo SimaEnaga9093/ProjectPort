@@ -60,22 +60,19 @@ void UPManageHUDWidget::OnOpen()
 void UPManageHUDWidget::InitPopupWidget()
 {
 	FAsyncLoadGameFromSlotDelegate OnLoaded;
-	OnLoaded.BindUObject(this, &UPManageHUDWidget::OnSaveGameLoaded);
+	OnLoaded.BindLambda([&] (const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData) {
+		TileViewEntries->ClearListItems();
+
+		UPPortSaveGame* SaveGame = Cast<UPPortSaveGame>(LoadedGameData);
+		for (int i = 0; i < SaveGame->Characters.Num(); i++)
+		{
+			UPManageEntryData* Item = NewObject<UPManageEntryData>();
+			Item->EntryData = SaveGame->Characters[i];
+			TileViewEntries->AddItem(Item);
+		}
+	});
 
 	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
-}
-
-void UPManageHUDWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
-{
-	TileViewEntries->ClearListItems();
-
-	UPPortSaveGame* SaveGame = Cast<UPPortSaveGame>(LoadedGameData);
-	for (int i = 0; i < SaveGame->Characters.Num(); i++)
-	{
-		UPManageEntryData* Item = NewObject<UPManageEntryData>();
-		Item->EntryData = SaveGame->Characters[i];
-		TileViewEntries->AddItem(Item);
-	}
 }
 
 void UPManageHUDWidget::OnListViewClicked(UObject* Item)
@@ -92,7 +89,12 @@ void UPManageHUDWidget::OnButtonResetClicked()
 	if (UPPortSaveGame* SaveGameInstance = Cast<UPPortSaveGame>(UGameplayStatics::CreateSaveGameObject(UPPortSaveGame::StaticClass())))
 	{
 		FAsyncSaveGameToSlotDelegate OnSaved;
-		OnSaved.BindUObject(this, &UPManageHUDWidget::OnSaveGameSaved);
+		OnSaved.BindLambda([&] (const FString& SlotName, const int32 UserIndex, bool bSuccess) {
+			if (bSuccess)
+				GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Reset Success!")));
+
+			InitPopupWidget();
+		});
 
 		TArray<FPContentCharacterInfo> SaveGameDatas;
 		if (DataTable)
@@ -110,14 +112,6 @@ void UPManageHUDWidget::OnButtonResetClicked()
 
 		UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, TEXT("Default"), 0, OnSaved);
 	}
-}
-
-void UPManageHUDWidget::OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
-{
-	if (bSuccess)
-		GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Reset Success!")));
-
-	InitPopupWidget();
 }
 
 void UPManageHUDWidget::OnButtonEmployClicked()

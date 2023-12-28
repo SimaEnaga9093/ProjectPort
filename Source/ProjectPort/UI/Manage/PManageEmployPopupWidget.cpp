@@ -163,43 +163,38 @@ void UPManageEmployPopupWidget::OnCommonButtonEmployClicked()
 		return;
 	}
 
+	FAsyncSaveGameToSlotDelegate OnSaved;
+	OnSaved.BindLambda([&] (const FString& SlotName, const int32 UserIndex, bool bSuccess) {
+		ClosePopup();
+
+		if (bSuccess)
+			GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Employ Success!")));
+	});
+
 	FAsyncLoadGameFromSlotDelegate OnLoaded;
-	OnLoaded.BindUObject(this, &UPManageEmployPopupWidget::OnSaveGameLoaded);
-	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
-}
-
-void UPManageEmployPopupWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
-{
-	UPPortSaveGame* SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
-	if (SavedGame)
-	{
-		FAsyncSaveGameToSlotDelegate OnSaved;
-		OnSaved.BindUObject(this, &UPManageEmployPopupWidget::OnSaveGameSaved);
-
-		FPContentCharacterInfo NewCharacter;
-		NewCharacter.Name = InputtedName.ToString();
-		NewCharacter.Job = SelectedJobType;
-		NewCharacter.Stats = InputtedStats;
-		NewCharacter.Level = 1;
-
-		if (SavedGame->Characters.Contains(NewCharacter))
+	OnLoaded.BindLambda([&, OnSaved] (const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData) {
+		UPPortSaveGame* SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
+		if (SavedGame)
 		{
-			GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Alreay has character name and job!")));
-			return;
+			FPContentCharacterInfo NewCharacter;
+			NewCharacter.Name = InputtedName.ToString();
+			NewCharacter.Job = SelectedJobType;
+			NewCharacter.Stats = InputtedStats;
+			NewCharacter.Level = 1;
+
+			if (SavedGame->Characters.Contains(NewCharacter))
+			{
+				GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Alreay has character name and job!")));
+				return;
+			}
+
+			SavedGame->Characters.Add(NewCharacter);
+
+			UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
 		}
+	});
 
-		SavedGame->Characters.Add(NewCharacter);
-
-		UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
-	}
-}
-
-void UPManageEmployPopupWidget::OnSaveGameSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
-{
-	ClosePopup();
-
-	if (bSuccess)
-		GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Employ Success!")));
+	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
 }
 
 void UPManageEmployPopupWidget::UpdateJobButtonState()

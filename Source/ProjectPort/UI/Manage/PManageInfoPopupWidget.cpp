@@ -16,7 +16,10 @@
 void UPManageInfoPopupWidget::OnOpen()
 {
 	FAsyncLoadGameFromSlotDelegate OnLoaded;
-	OnLoaded.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameLoaded);
+	OnLoaded.BindLambda([&] (const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData) {
+		SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
+	});
+
 	UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Default"), 0, OnLoaded);
 }
 
@@ -73,11 +76,6 @@ void UPManageInfoPopupWidget::RefreshWidget()
 		TextStats[(EContentCharacterStat)i]->SetText(FText::AsNumber(CharacterInfo.Stats[(EContentCharacterStat)i]));
 }
 
-void UPManageInfoPopupWidget::OnSaveGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData)
-{
-	SavedGame = Cast<UPPortSaveGame>(LoadedGameData);
-}
-
 void UPManageInfoPopupWidget::OnButtonBGClicked()
 {
 	ClosePopup();
@@ -95,16 +93,14 @@ void UPManageInfoPopupWidget::OnRetirementPopupConfirmClicked()
 	SavedGame->Characters.Remove(CharacterInfo);
 
 	FAsyncSaveGameToSlotDelegate OnSaved;
-	OnSaved.BindUObject(this, &UPManageInfoPopupWidget::OnSaveGameRetirementSaved);
+	OnSaved.BindLambda([&] (const FString& SlotName, const int32 UserIndex, bool bSuccess) {
+		ClosePopup();
+
+		if (bSuccess)
+			GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Retirement Success...")));
+	});
+
 	UGameplayStatics::AsyncSaveGameToSlot(SavedGame, TEXT("Default"), 0, OnSaved);
-}
-
-void UPManageInfoPopupWidget::OnSaveGameRetirementSaved(const FString& SlotName, const int32 UserIndex, bool bSuccess)
-{
-	ClosePopup();
-
-	if (bSuccess)
-		GetPortGameMode()->OpenToastMessageWidget(FText::FromString(TEXT("Retirement Success...")));
 }
 
 void UPManageInfoPopupWidget::OnButtonTrainClicked()
