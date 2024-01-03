@@ -116,7 +116,7 @@ void UPManageInfoPopupWidget::OnButtonTrainClicked()
 	SavedGame->Characters[Index] = CharacterInfo;
 
 	FAsyncSaveGameToSlotDelegate OnSaved;
-	OnSaved.BindLambda([&, IncreasedValue] (const FString& SlotName, const int32 UserIndex, bool bSuccess) {
+	OnSaved.BindLambda([&, TargetStat, IncreasedValue] (const FString& SlotName, const int32 UserIndex, bool bSuccess) {
 		RefreshWidget();
 
 		if (bSuccess)

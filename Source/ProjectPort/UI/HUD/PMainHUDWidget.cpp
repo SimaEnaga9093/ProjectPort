@@ -20,9 +20,6 @@ void UPMainHUDWidget::NativeConstruct()
 	if (CommonButtonQuest)
 		CommonButtonQuest->GetButtonBG()->OnClicked.AddDynamic(this, &UPMainHUDWidget::OnButtonQuestClicked);
 
-	if (CommonButtonParty)
-		CommonButtonParty->GetButtonBG()->OnClicked.AddDynamic(this, &UPMainHUDWidget::OnButtonPartyClicked);
-
 	if (CommonButtonManage)
 		CommonButtonManage->GetButtonBG()->OnClicked.AddDynamic(this, &UPMainHUDWidget::OnButtonManageClicked);
 }
@@ -34,9 +31,6 @@ void UPMainHUDWidget::NativeDestruct()
 	if (CommonButtonQuest)
 		CommonButtonQuest->GetButtonBG()->OnClicked.RemoveAll(this);
 
-	if (CommonButtonParty)
-		CommonButtonParty->GetButtonBG()->OnClicked.RemoveAll(this);
-
 	if (CommonButtonManage)
 		CommonButtonManage->GetButtonBG()->OnClicked.RemoveAll(this);
 }
@@ -44,11 +38,6 @@ void UPMainHUDWidget::NativeDestruct()
 void UPMainHUDWidget::OnButtonQuestClicked()
 {
 	GetPortGameMode()->OpenHUDWidget(TEXT("WBP_QuestHUD"), 0);
-}
-
-void UPMainHUDWidget::OnButtonPartyClicked()
-{
-	GetPortGameMode()->OpenHUDWidget(TEXT("WBP_PartyHUD"), 0);
 }
 
 void UPMainHUDWidget::OnButtonManageClicked()
